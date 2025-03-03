@@ -11,10 +11,10 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -201,14 +201,14 @@
             transform: translateY(10px);
             transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             overflow: hidden;
-            
+
         }
 
         .nav-item.dropdown:hover .dropdown-menu {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
-            
+
         }
         .dropdown-toggle.no-caret::after {
             display: none;
@@ -385,6 +385,7 @@
             color: var(--primary-light);
             margin-left: 5px;
         }
+
     </style>
 </head>
 
@@ -469,7 +470,7 @@
                             <i class="fas fa-list"></i> Thể loại
                             <span class="category-badge">9</span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        <ul class="dropdown-menu show" aria-labelledby="categoryDropdown">
                             <li>
                                 <a class="dropdown-item active" href="./animatedMovies.html">
                                     <i class="fas fa-dragon"></i> Hoạt Hình
@@ -585,14 +586,14 @@
     <script src="js/searchHsndler.js"></script>
     <!-- Phim Bộ API -->
     <script src="js/animatedMovies.js"></script>
-    
+
     <script>
         // Giả lập độ trễ 2 giây để kiểm tra
         setTimeout(function () {
             const loading = document.getElementById('loading');
             loading.style.display = 'none';
         }, 2000); // 2000ms = 2 giây
-        
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
