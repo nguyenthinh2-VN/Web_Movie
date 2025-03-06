@@ -79,7 +79,7 @@
         width: 96px;
         animation: rotate_3922 1.2s linear infinite;
         background-color: #ff3d00; /* Màu đỏ cho container */
-        background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f); 
+        background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f);
       }
 
       .loading-container span {
@@ -87,8 +87,8 @@
         border-radius: 50%;
         height: 100%;
         width: 100%;
-        background-color: #ff3d00; 
-        background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f); 
+        background-color: #ff3d00;
+        background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f);
       }
 
       .loading-container span:nth-of-type(1) {
@@ -852,6 +852,26 @@
           navbar.classList.add("scrolled");
         } else {
           navbar.classList.remove("scrolled");
+        }
+      });
+      // Kiểm tra kích thước màn hình và thêm class 'show' cho dropdown-menu
+      document.addEventListener("DOMContentLoaded", function () {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (window.innerWidth > 768) {
+          // Kiểm tra nếu là desktop
+          dropdownMenu.classList.add("show");
+        } else {
+          dropdownMenu.classList.remove("show"); // Đảm bảo không có class 'show' trên mobile
+        }
+      });
+
+      // Cập nhật lại khi thay đổi kích thước cửa sổ
+      window.addEventListener("resize", function () {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (window.innerWidth > 768) {
+          dropdownMenu.classList.add("show");
+        } else {
+          dropdownMenu.classList.remove("show");
         }
       });
     </script>

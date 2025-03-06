@@ -311,6 +311,19 @@ body {
       white-space: nowrap;
       /* Ngăn chữ bị xuống dòng trong nút */
     }
+
+  }
+  .movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px 0 30px;
+  }
+  .movie-card {
+    height: 10%;
+  }
+  .movie-meta{
+    display: flex;
   }
 }
 
@@ -318,9 +331,6 @@ body {
   display: block;
   background-color: #1a1a1a;
 }
-
-
-
 
 
 .name-sub {
@@ -530,15 +540,7 @@ body {
 @media (max-width: 768px) {
 
   /* Movie Card Styles */
-  .movie-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 10px 0 30px;
-  }
-  .movie-card {
-    height: 10%;
-  }
+  
 }
 
 

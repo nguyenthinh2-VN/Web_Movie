@@ -728,6 +728,25 @@
           element.classList.add("visible");
         });
       }, 2000); // 2000ms = 2 giây
+      // Kiểm tra kích thước màn hình và thêm class 'show' cho dropdown-menu
+      document.addEventListener("DOMContentLoaded", function () {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (window.innerWidth > 768) { // Kiểm tra nếu là desktop
+          dropdownMenu.classList.add("show");
+        } else {
+          dropdownMenu.classList.remove("show"); // Đảm bảo không có class 'show' trên mobile
+        }
+      });
+    
+      // Cập nhật lại khi thay đổi kích thước cửa sổ
+      window.addEventListener("resize", function () {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (window.innerWidth > 768) {
+          dropdownMenu.classList.add("show");
+        } else {
+          dropdownMenu.classList.remove("show");
+        }
+      });
     </script>
   </body>
 </html>

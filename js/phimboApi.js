@@ -25,7 +25,7 @@ function displayMovies(movies) {
     
     movies.forEach(movie => {
         const movieDiv = document.createElement('div');
-        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3 w-100';
+        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3';
         movieDiv.onclick = () => location.href = `./movieDetails.html?slug=${movie.slug}`;
         
         // Thêm lazy loading cho ảnh
