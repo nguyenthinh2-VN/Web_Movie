@@ -26,7 +26,7 @@ function displayAnimatedMovies(movies) {
     
     movies.slice(0, 8).forEach(movie => { // Chỉ lấy 8 phim đầu tiên
         const movieDiv = document.createElement('div');
-        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3 w-100';
+        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3';
         movieDiv.onclick = () => location.href = `./movieDetails.html?slug=${movie.slug}`;
         
         movieDiv.innerHTML = `
@@ -83,7 +83,7 @@ function displayNewMovies(movies) {
     
     movies.forEach(movie => {
         const movieDiv = document.createElement('div');
-        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3 w-100';
+        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3';
         movieDiv.onclick = () => location.href = `./movieDetails.html?slug=${movie.slug}`;
         
         movieDiv.innerHTML = `

@@ -68,8 +68,10 @@ body {
 
 .btn-donate {
   --clr-font-main: hsla(0 0% 20% / 100);
-  --btn-bg-1: hsla(14, 100%, 50%, 1);    /* Màu cam đỏ (#ff3d00) */
-  --btn-bg-2: hsla(14, 100%, 30%, 1);    /* Màu cam đỏ tối hơn (#c30000) */
+  --btn-bg-1: hsla(14, 100%, 50%, 1);
+  /* Màu cam đỏ (#ff3d00) */
+  --btn-bg-2: hsla(14, 100%, 30%, 1);
+  /* Màu cam đỏ tối hơn (#c30000) */
   --btn-bg-color: hsla(360 100% 100% / 1);
   --radii: 0.5em;
   cursor: pointer;
@@ -88,15 +90,19 @@ body {
   border-radius: var(--radii);
   color: var(--btn-bg-color);
   box-shadow:
-    0px 0px 20px rgba(255, 61, 0, 0.5),    /* Thay đổi màu shadow */
-    0px 5px 5px -1px rgba(195, 0, 0, 0.25), /* Thay đổi màu shadow */
-    inset 4px 4px 8px rgba(255, 158, 128, 0.5), /* Thay đổi màu shadow nội */
-    inset -4px -4px 8px rgba(195, 0, 0, 0.35);  /* Thay đổi màu shadow nội */
+    0px 0px 20px rgba(255, 61, 0, 0.5),
+    /* Thay đổi màu shadow */
+    0px 5px 5px -1px rgba(195, 0, 0, 0.25),
+    /* Thay đổi màu shadow */
+    inset 4px 4px 8px rgba(255, 158, 128, 0.5),
+    /* Thay đổi màu shadow nội */
+    inset -4px -4px 8px rgba(195, 0, 0, 0.35);
+  /* Thay đổi màu shadow nội */
   margin: 0 0;
 }
 
 
-/* From Uiverse.io by Li-Deheng */ 
+/* From Uiverse.io by Li-Deheng */
 .btn-conteiner {
   display: flex;
   justify-content: center;
@@ -121,7 +127,8 @@ body {
   box-shadow: 0 0 0.2em 0 var(--color-background);
 }
 
-.btn-content:hover, .btn-content:focus {
+.btn-content:hover,
+.btn-content:focus {
   transition: 0.5s;
   -webkit-animation: btn-content 1s;
   animation: btn-content 1s;
@@ -147,7 +154,7 @@ body {
   position: relative;
   top: 6%;
 }
-  
+
 /* SVG */
 #arrow-icon-one {
   transition: 0.4s;
@@ -520,14 +527,21 @@ body {
   color: var(--primary-light);
 }
 
-/* Movie Card Styles */
-.movie-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 10px 0 30px;
-  width: 100%;
+@media (max-width: 768px) {
+
+  /* Movie Card Styles */
+  .movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px 0 30px;
+  }
+  .movie-card {
+    height: 10%;
+  }
 }
+
+
 
 .movie-card {
   background: var(--card-bg);
