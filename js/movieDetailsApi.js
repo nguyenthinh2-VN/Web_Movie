@@ -1,8 +1,11 @@
 async function fetchMovieDetails(slug) {
     try {
+        console.log(`Fetching details for slug: ${slug}`);
         const response = await fetch(`https://phimapi.com/phim/${slug}`);
         const data = await response.json();
         
+        console.log('API Response:', data);
+
         if (data.status === true) {
             displayMovieDetails(data.movie);
             displayEpisodes(data.episodes);
@@ -21,7 +24,27 @@ function displayMovieDetails(movie) {
                             movie.director.length === 1 && 
                             movie.director[0] === "Đang cập nhật";
     
-    
+    // Tính toán số sao dựa trên vote_average
+    const totalStars = 5;
+    let voteAverage = parseFloat(movie.tmdb.vote_average); // Lấy vote_average từ API và chuyển đổi thành số
+
+    // Kiểm tra giá trị voteAverage
+    if (isNaN(voteAverage) || voteAverage < 0) {
+        console.error('Invalid vote_average:', voteAverage);
+        voteAverage = 0; // Đặt về 0 nếu không hợp lệ
+    }
+
+    // Tính số sao dựa trên voteAverage (mỗi sao tương ứng với 2 điểm)
+    const filledStars = Math.max(0, Math.min(totalStars, Math.floor(voteAverage / 2))); // Số sao đầy
+    const halfStar = (voteAverage % 2) >= 1 ? 1 : 0; // Kiểm tra có sao rưỡi không
+    const emptyStars = totalStars - filledStars - halfStar; // Số sao trống
+
+    // Đảm bảo không có giá trị âm cho emptyStars
+    if (emptyStars < 0) {
+        console.error('Invalid emptyStars:', emptyStars);
+        emptyStars = 0; // Đặt về 0 nếu không hợp lệ
+    }
+
     // Hiển thị thông tin chi tiết phim
     detailsContainer.innerHTML = `
         <div class="row movie-details">
@@ -35,18 +58,20 @@ function displayMovieDetails(movie) {
                     ${showDirectorBadge ? `<span class="badge bg-success me-2">${movie.director}</span>` : ''}
                     ${movie.is_copyright ? '<span class="badge bg-danger">Bản quyền</span>' : ''}
                 </div>
+                <button class="btn-play-movie btn-primary mt-5  mb-5" id="watchFirstEpisode">Xem phim</button>
             </div>
             <div class="col-md-8">
-                <h1>${movie.name}</h1>
+                <h1 class="sub-main">${movie.name}</h1>
                 <h3 class="name-sub">${movie.origin_name}</h3>
                 <div class="mt-3 body-test-details">
-                    <p><strong>Trạng thái:</strong> ${movie.episode_current}</p>
+                    <p><strong>Trạng thái:</strong> <span class="status-badge">${movie.episode_current}</span></p>
                     <p><strong>Năm phát hành:</strong> ${movie.year}</p>
                     <p><strong>Thời lượng:</strong> ${movie.time}</p>
                     <p><strong>Thể loại:</strong> ${movie.category.map(cat => cat.name).join(', ')}</p>
                     <p><strong>Quốc gia:</strong> ${movie.country.map(country => country.name).join(', ')}</p>
                     <p><strong>Đạo diễn:</strong> ${movie.director.join(', ')}</p>
                     <p><strong>Diễn viên:</strong> ${movie.actor.join(', ')}</p>
+                    <p class="text-warning"><strong>Yêu thích:</strong> ${'★'.repeat(filledStars)}${halfStar ? '☆' : ''}${'☆'.repeat(emptyStars)} (${voteAverage}/10)</p>
                 </div>
                 <div class="mt-4">
                     <h4>Nội dung phim</h4>
@@ -55,9 +80,38 @@ function displayMovieDetails(movie) {
             </div>
         </div>
     `;
+
+    // Thêm sự kiện click cho nút "Xem phim"
+    document.getElementById('watchFirstEpisode').addEventListener('click', () => {
+        // Kiểm tra xem có dữ liệu episodes không
+        if (window.episodesData && window.episodesData.length > 0) {
+            // Lấy server đầu tiên
+            const firstServer = window.episodesData[0];
+            
+            // Kiểm tra xem server có dữ liệu tập phim không
+            if (firstServer.server_data && firstServer.server_data.length > 0) {
+                // Lấy tập đầu tiên
+                const firstEpisode = firstServer.server_data[0];
+                console.log('Phát tập đầu tiên:', firstEpisode);
+                
+                // Mở video với link_embed và tên tập
+                playEpisode(firstEpisode.link_embed, firstEpisode.filename);
+            } else {
+                console.error('Không có tập phim nào trong server.');
+            }
+        } else {
+            console.error('Không có dữ liệu tập phim.');
+        }
+    });
 }
 
+// Thêm biến toàn cục để lưu dữ liệu episodes
+window.episodesData = null;
+
 function displayEpisodes(episodes) {
+    // Lưu dữ liệu episodes vào biến toàn cục để sử dụng sau này
+    window.episodesData = episodes;
+    
     const episodeContainer = document.getElementById('episodeList');
     
     if (!episodes || episodes.length === 0) {
@@ -164,6 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
     
+    console.log(`Slug from URL: ${slug}`);
+
     if (slug) {
         fetchMovieDetails(slug);
     } else {

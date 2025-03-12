@@ -43,23 +43,6 @@ body {
   padding: 20px;
 }
 
-/* Tiêu đề phim */
-.movie-details h1 {
-  color: #ffffff;
-  /* Màu trắng nổi bật cho tiêu đề chính */
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.movie-details .name-sub {
-  color: #a0a0a0;
-  /* Màu xám nhạt cho tên gốc */
-  font-size: 1.2rem;
-  font-style: italic;
-  margin-bottom: 1rem;
-}
 
 .btn-move-container {
   display: flex;
@@ -209,11 +192,64 @@ body {
     outline-offset: 0;
   }
 }
+/* Tiêu đề phim */
+.movie-details h1 {
+  color: #cf8e19;
+  /* Màu trắng nổi bật cho tiêu đề chính */
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
 
+/* Nút xem phim */
+/* From Uiverse.io by mrhyddenn */ 
+.btn-play-movie {
+  padding: 8px 12px;
+  border: none;
+  font-size: 17px;
+  color: #fff;
+  border-radius: 7px;
+  letter-spacing: 4px;
+  font-weight: 500;
+  transition: 0.5s;
+  transition-property: box-shadow;
+}
+
+.btn-play-movie {
+  background: rgb(0,140,255);
+  box-shadow: 0 0 25px rgb(0,140,255);
+}
+
+.btn-play-movie:hover {
+  box-shadow: 0 0 5px rgb(0,140,255),
+              0 0 25px rgb(0,140,255),
+              0 0 50px rgb(0,140,255),
+              0 0 100px rgb(0,140,255);
+}
+
+.movie-details .name-sub {
+  color: #a0a0a0;
+  /* Màu xám nhạt cho tên gốc */
+  font-size: 1.2rem;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+/* Màu của trang thái */
+.status-badge {
+  padding: 3px 7px;
+  color: #fff;
+  background-size: 300% 100%;
+  background-image: linear-gradient(to right, #25aae1, #043ea5, #04befe, #3f86ed);
+  border-radius: 3px;
+  font-size: 15px;
+  text-transform: capitalize;
+  
+}
 /* Thông tin chi tiết */
 .body-test-details {
   background-color: #2d2d2d;
-  /* Nền xám tối hơn cho phần nội dung */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -221,11 +257,10 @@ body {
 
 .body-test-details p {
   margin-bottom: 0.8rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #d0d0d0;
   /* Màu xám nhạt cho nội dung */
 }
-
 .body-test-details strong {
   color: #ffffff;
   /* Màu trắng cho tiêu đề trong nội dung */
@@ -262,13 +297,14 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   color: #c0c0c0;
   /* Màu xám nhạt cho nội dung phim */
-  font-size: 1rem;
+  font-size: 1.1rem;
   text-align: justify;
 }
 
 .movie-content h4 {
   color: #ffffff;
   margin-bottom: 1rem;
+  
 }
 
 /*Responsive design */
