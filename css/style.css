@@ -43,6 +43,13 @@ body {
   padding: 20px;
 }
 
+.name-main{
+  color: #cf8e19;
+}
+
+.name-sub{
+  color: #a0a0a0;
+}
 
 .btn-move-container {
   display: flex;
@@ -582,77 +589,100 @@ body {
 
 
 .movie-card {
-  background: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: var(--transition-normal);
-  border: none;
   position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
+  background-color: var(--dark-bg-lighter, #1c1e25);
+  border: none;
+  border-radius: 8px;
 }
 
 .movie-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-  background: var(--card-hover);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-.movie-card:hover::before {
-  opacity: 1;
-}
-
-.movie-card::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-light));
-  z-index: -1;
-  border-radius: 10px;
-  opacity: 0;
-  transition: var(--transition-normal);
+.card-poster {
+  position: relative;
+  overflow: hidden;
 }
 
 .card-img-top {
-  width: 100%;
-  height: 300px;
+  height: 350px;
   object-fit: cover;
-  transition: var(--transition-normal);
+  transition: transform 0.5s ease;
 }
 
 .movie-card:hover .card-img-top {
   transform: scale(1.05);
 }
 
-.card-body {
-  background-color: var(--card-bg);
-  padding: 15px;
-  position: relative;
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  z-index: 1;
+.movie-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  text-align: center;
+}
+
+.btn-play {
+  color: var(--primary-light);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.movie-type {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+.card-body {
+  padding: 1rem;
 }
 
 .card-title {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
   color: white;
-  margin-bottom: 8px;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-
 }
 
 .card-text {
-  color: var(--text-gray);
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: white;
+  font-size: 0.85rem;
+  color: var(--text-muted, #b0b0b0);
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
+.text {
+  color: var(--text-muted, #b0b0b0);
+  font-size: 0.8rem;
 }
 
 .movie-genres {

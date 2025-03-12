@@ -31,11 +31,20 @@ function displayAnimatedMovies(movies) {
         
         movieDiv.innerHTML = `
             <div class="card movie-card">
-                <img src="https://phimimg.com/${movie.poster_url}" 
-                     class="card-img-top ld ld-bounce-in" 
-                     alt="${movie.name}"
-                     loading="lazy"
-                     onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                <div class="card-poster">
+                    <img src="https://phimimg.com/${movie.poster_url}" 
+                         class="card-img-top ld ld-bounce-in" 
+                         alt="${movie.name}"
+                         loading="lazy"
+                         onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                    <div class="card-overlay">
+                        <div class="overlay-content">
+                            <span class="btn-play">
+                                <i class="fas fa-play-circle fa-3x"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title" title="${movie.name}">${movie.name}</h5>
                     <p class="card-text" title="${movie.origin_name}">${movie.origin_name}</p>
@@ -193,6 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Scroll lên đầu danh sách phim
             document.getElementById('newMovies').scrollIntoView({ behavior: 'smooth' });
+        }
+        // Cuộn đến tiêu đề "Phim Hoạt Hình"
+        const pageTitle = document.querySelector('.page-title');
+        if (pageTitle) {
+            pageTitle.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // Fallback nếu không tìm thấy tiêu đề
+            window.scrollTo({
+                top: 1670,
+                behavior: 'smooth'
+            });
         }
     });
 }); 

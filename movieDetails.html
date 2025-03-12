@@ -712,32 +712,35 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Search Handler -->
-    <script src="js/searchHandler.js"></script>
-    <!-- Movie Details API -->
-    <script src="js/movieDetailsApi.js"></script>
+
+    <!-- Animation Script -->
     <script>
       // Giả lập độ trễ 2 giây để kiểm tra
       setTimeout(function () {
         const loading = document.getElementById("loading");
         loading.style.display = "none";
-
-        // Thêm lớp 'visible' để kích hoạt hiệu ứng
-        const elements = document.querySelectorAll(".animate-me");
-        elements.forEach((element) => {
-          element.classList.add("visible");
-        });
       }, 2000); // 2000ms = 2 giây
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
       // Kiểm tra kích thước màn hình và thêm class 'show' cho dropdown-menu
       document.addEventListener("DOMContentLoaded", function () {
         const dropdownMenu = document.querySelector(".dropdown-menu");
-        if (window.innerWidth > 768) { // Kiểm tra nếu là desktop
+        if (window.innerWidth > 768) {
+          // Kiểm tra nếu là desktop
           dropdownMenu.classList.add("show");
         } else {
           dropdownMenu.classList.remove("show"); // Đảm bảo không có class 'show' trên mobile
         }
       });
-    
+
       // Cập nhật lại khi thay đổi kích thước cửa sổ
       window.addEventListener("resize", function () {
         const dropdownMenu = document.querySelector(".dropdown-menu");
@@ -748,5 +751,10 @@
         }
       });
     </script>
+
+    <!-- Search Handler -->
+    <script src="js/searchHandler.js"></script>
+    <!-- Movie API -->
+    <script src="js/movieDetailsApi.js"></script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tìm kiếm - Yuki Movie</title>
+    <title>Xem Phim - Yuki Movie</title>
 
     <!-- Preconnect to required origins -->
     <link rel="preconnect" href="https://phimapi.com" />
@@ -38,179 +38,115 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  <style>
-    :root {
-      --primary-color: #ff3d00;
-      --primary-light: #ff9e80;
-      --primary-dark: #c30000;
-      --dark-bg: #131419;
-      --dark-bg-lighter: #1c1e25;
-      --text-light: #ffffff;
-      --text-muted: #b0b0b0;
-    }
 
-    body {
-      background-color: var(--dark-bg);
-      color: var(--text-light);
-      font-family: "Roboto", sans-serif;
-    }
-
-    /* Loader Animation */
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(
-        0,
-        0,
-        0,
-        0.9
-      ); /* Tăng độ tối để không nhìn thấy nội dung phía sau */
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      background: var(--dark-bg);
-    }
-
-    /* Thêm CSS cho animation */
-    .hidden-element {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .visible-element {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .loading-container {
-      position: relative;
-      border-radius: 50%;
-      height: 96px;
-      width: 96px;
-      animation: rotate_3922 1.2s linear infinite;
-      background-color: #ff3d00;
-      background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f);
-    }
-
-    .loading-container span {
-      position: absolute;
-      border-radius: 50%;
-      height: 100%;
-      width: 100%;
-      background-color: #ff3d00;
-      background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f);
-    }
-
-    .loading-container span:nth-of-type(1) {
-      filter: blur(5px);
-    }
-
-    .loading-container span:nth-of-type(2) {
-      filter: blur(10px);
-    }
-
-    .loading-container span:nth-of-type(3) {
-      filter: blur(25px);
-    }
-
-    .loading-container span:nth-of-type(4) {
-      filter: blur(50px);
-    }
-
-    .loading-container::after {
-      content: "";
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      background-color: #fff;
-      border: solid 5px #ffffff;
-      border-radius: 50%;
-    }
-
-    @keyframes rotate_3922 {
-      from {
-        transform: rotate(0deg);
+    <style>
+      :root {
+        --primary-color: #ff3d00;
+        --primary-light: #ff9e80;
+        --primary-dark: #c30000;
+        --dark-bg: #131419;
+        --dark-bg-lighter: #1c1e25;
+        --text-light: #ffffff;
+        --text-muted: #b0b0b0;
       }
 
-      to {
-        transform: rotate(360deg);
+      body {
+        background-color: var(--dark-bg);
+        color: var(--text-light);
+        font-family: "Roboto", sans-serif;
       }
-    }
 
-    /* Enhanced Navbar */
-    .navbar {
-      background-color: rgba(19, 20, 25, 0.95) !important;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      padding: 12px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      transition: all 0.3s ease;
-    }
+      /* Loader Animation */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 61, 0, 0.9); /* Màu đỏ cho overlay */
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        background: var(--dark-bg);
+      }
 
-    .navbar.scrolled {
-      padding: 8px 0;
-      background-color: rgba(19, 20, 25, 0.98) !important;
-    }
+      .loading-container {
+        position: relative;
+        border-radius: 50%;
+        height: 96px;
+        width: 96px;
+        animation: rotate_3922 1.2s linear infinite;
+        background-color: #ff3d00; /* Màu đỏ cho container */
+        background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f);
+      }
 
-    /* Loading indicator for search results */
-    #loadingIndicator {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      width: 100%;
-    }
+      .loading-container span {
+        position: absolute;
+        border-radius: 50%;
+        height: 100%;
+        width: 100%;
+        background-color: #ff3d00;
+        background-image: linear-gradient(#ff3d00, #ff9e80, #dc5a0f);
+      }
 
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(255, 61, 0, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--primary-color);
-      animation: spin 1s ease-in-out infinite;
-    }
+      .loading-container span:nth-of-type(1) {
+        filter: blur(5px);
+      }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+      .loading-container span:nth-of-type(2) {
+        filter: blur(10px);
+      }
 
-    /* Search results styling */
-    .search-header {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 1rem;
-    }
+      .loading-container span:nth-of-type(3) {
+        filter: blur(25px);
+      }
 
-    .search-keyword {
-      color: var(--primary-light);
-      font-weight: 500;
-    }
+      .loading-container span:nth-of-type(4) {
+        filter: blur(50px);
+      }
 
-    .no-results {
-      text-align: center;
-      padding: 3rem 1rem;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      margin: 2rem 0;
-    }
+      .loading-container::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        background-color: #fff;
+        border: solid 5px #ffffff;
+        border-radius: 50%;
+      }
 
-    .no-results i {
-      color: var(--primary-light);
-      margin-bottom: 1rem;
-    }
-    /* Logo Animation */
-    .logo-container {
+      @keyframes rotate_3922 {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      /* Enhanced Navbar */
+      .navbar {
+        background-color: rgba(19, 20, 25, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        padding: 12px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        padding: 8px 0;
+        background-color: rgba(19, 20, 25, 0.98) !important;
+      }
+
+      /* Logo Animation */
+      .logo-container {
         position: relative;
         display: flex;
         align-items: center;
@@ -506,8 +442,113 @@
         color: var(--primary-light);
         margin-left: 5px;
       }
-    
-  </style>
+
+      /* Video Player Styles */
+      .video-container {
+        background-color: var(--dark-bg-lighter);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+      }
+
+      .video-title {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .video-title h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--text-light);
+      }
+
+      .video-player {
+        position: relative;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      }
+
+      .video-player iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* Episode List Styles */
+      .episode-section {
+        background-color: var(--dark-bg-lighter);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .server-name {
+        color: var(--primary-light);
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .episode-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .episode-button {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--text-light);
+        border: 1px solid transparent;
+        border-radius: 5px;
+        padding: 8px 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .episode-button:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .episode-button.active {
+        background-color: var(--primary-color);
+        border-color: var(--primary-light);
+      }
+
+      .back-to-details {
+        margin-bottom: 20px;
+        display: inline-block;
+        color: #17a2b8;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-size: 1.2rem;
+        
+      }
+
+      .back-to-details:hover {
+        color: var(--primary-light);
+      }
+
+      .back-to-details i {
+        margin-right: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .episode-grid {
+          gap: 5px;
+        }
+        
+        .episode-button {
+          padding: 6px 10px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
   <body>
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loading">
@@ -519,7 +560,6 @@
       </div>
     </div>
 
-    <!-- Navbar (giống như Home.html) -->
     <!-- Enhanced Navbar -->
     <nav
       class="navbar navbar-expand-lg navbar-dark animate-me"
@@ -649,76 +689,122 @@
 
     <!-- Main Content -->
     <div class="container mt-4">
-      <div class="search-header">
-        <h2>Kết quả tìm kiếm cho: <span id="searchKeyword" class="search-keyword">...</span></h2>
+      <div id="movieInfo">
+        <!-- Movie info will be loaded here -->
       </div>
-      <div class="scroll-container animate-me" data-delay="400">
-        <div class="row movie-list" id="searchResults">
-          <!-- Movies will be loaded here by JavaScript -->
+      
+      <a href="#" id="backToDetails" class="back-to-details">
+        <i class="fas fa-arrow-left"></i> Quay lại trang chi tiết
+      </a>
+      
+      <div class="video-container">
+        <div class="video-title">
+          <h2 id="episodeTitle">Đang tải...</h2>
+        </div>
+        <div class="video-player" id="videoPlayer">
+          <!-- Video player will be loaded here -->
         </div>
       </div>
 
-      <!-- Thêm phân trang -->
-      <nav
-        aria-label="Page navigation"
-        class="mt-4 animate-me"
-        data-delay="700"
-      >
-        <ul class="pagination justify-content-center" id="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous" id="prevPage">
-              <span aria-hidden="true"
-                ><i class="fas fa-chevron-left"></i
-              ></span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" data-page="1">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" data-page="2">2</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" data-page="3">3</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next" id="nextPage">
-              <span aria-hidden="true"
-                ><i class="fas fa-chevron-right"></i
-              ></span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+      <div class="episode-section mt-4">
+        <h3 class="mb-4">Danh sách tập phim</h3>
+        <div id="episodeList">
+          <!-- Episodes will be loaded here -->
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light mt-5 py-3">
-      <div class="container text-center">
-        <p>
-          &copy; 2025 YukiMovie. Trang Website tạo ra nhằm mục đích học tập và
-          làm quen với các kỹ năng lập trình
+    <footer class="bg-dark text-light mt-5 py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <h5 class="mb-3 border-start border-danger border-4 ps-2">
+              Về Yuki Movie
+            </h5>
+            <p>
+              Trang website tạo ra nhằm mục đích học tập và làm quen với các kỹ
+              năng lập trình. Nội dung trang web không có mục đích thương mại.
+            </p>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5 class="mb-3 border-start border-danger border-4 ps-2">
+              Liên kết nhanh
+            </h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="./index.html" class="text-light text-decoration-none"
+                  ><i class="fas fa-angle-right me-2"></i>Trang chủ</a
+                >
+              </li>
+              <li>
+                <a href="./phimle.html" class="text-light text-decoration-none"
+                  ><i class="fas fa-angle-right me-2"></i>Phim Lẻ</a
+                >
+              </li>
+              <li>
+                <a href="./phimbo.html" class="text-light text-decoration-none"
+                  ><i class="fas fa-angle-right me-2"></i>Phim Bộ</a
+                >
+              </li>
+              <li>
+                <a href="./tvshow.html" class="text-light text-decoration-none"
+                  ><i class="fas fa-angle-right me-2"></i>TV Show</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5 class="mb-3 border-start border-danger border-4 ps-2">
+              Kết nối
+            </h5>
+            <div class="social-icons">
+              <a href="#" class="text-light me-2"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-light me-2"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="text-light me-2"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-light me-2"
+                ><i class="fab fa-youtube"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <hr class="mt-4 mb-3" />
+        <p class="text-center mb-0">
+          &copy; 2025 YukiMovie. Tất cả các quyền được bảo lưu.
         </p>
       </div>
     </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Search Handler -->
+    <script src="js/searchHandler.js"></script>
+    <!-- Watch Movie JS -->
+    <script src="js/watchMovie.js"></script>
     <script>
-        // Giả lập độ trễ 2 giây để kiểm tra
-        setTimeout(function () {
-          const loading = document.getElementById("loading");
-          loading.style.display = "none";
-        }, 1000); // 1000ms = 1 giây
-  
-        // Navbar scroll effect
-        window.addEventListener("scroll", function () {
-          const navbar = document.querySelector(".navbar");
-          if (window.scrollY > 100) {
-            navbar.classList.add("scrolled");
-          } else {
-            navbar.classList.remove("scrolled");
-          }
-        });
-        // Kiểm tra kích thước màn hình và thêm class 'show' cho dropdown-menu
+      // Giả lập độ trễ 1.5 giây để kiểm tra
+      setTimeout(function () {
+        const loading = document.getElementById("loading");
+        loading.style.display = "none";
+      }, 1500);
+      
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+      
+      // Kiểm tra kích thước màn hình và thêm class 'show' cho dropdown-menu
       document.addEventListener("DOMContentLoaded", function () {
         const dropdownMenu = document.querySelector(".dropdown-menu");
         if (window.innerWidth > 768) { // Kiểm tra nếu là desktop
@@ -737,11 +823,6 @@
           dropdownMenu.classList.remove("show");
         }
       });
-      </script>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Search JS -->
-    <script src="js/searchHandler.js"></script>
+    </script>
   </body>
-</html>
+</html> 

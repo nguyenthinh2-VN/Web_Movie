@@ -1,8 +1,9 @@
 let currentPage = 1;
+const ITEMS_PER_PAGE = 16; // Số phim hiển thị trên mỗi trang
 
 async function fetchMovies(page) {
     try {
-        const response = await fetch(`https://phimapi.com/v1/api/danh-sach/phim-bo?page=${page}`);
+        const response = await fetch(`https://phimapi.com/v1/api/danh-sach/phim-bo?page=${page}&limit=${ITEMS_PER_PAGE}`);
         const data = await response.json();
         
         if (data.status === "success") {
@@ -18,56 +19,69 @@ async function fetchMovies(page) {
 
 function displayMovies(movies) {
     const movieContainer = document.getElementById('movieList');
-    movieContainer.innerHTML = '';
     
-    // Tạo một fragment để giảm thiểu việc reflow/repaint
-    const fragment = document.createDocumentFragment();
+    if (!movies || movies.length === 0) {
+        movieContainer.innerHTML = '<p class="text-center">Không có phim nào.</p>';
+        return;
+    }
+    
+    let moviesHTML = '';
     
     movies.forEach(movie => {
-        const movieDiv = document.createElement('div');
-        movieDiv.className = 'col-lg-3 col-md-4 col-sm-6 col-12 my-3';
-        movieDiv.onclick = () => location.href = `./movieDetails.html?slug=${movie.slug}`;
-        
-        // Thêm lazy loading cho ảnh
-        movieDiv.innerHTML = `
-            <div class="card movie-card">
-                <img src="https://phimimg.com/${movie.poster_url}" 
-                     class="card-img-top" 
-                     alt="${movie.name}"
-                     loading="lazy"
-                     onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
-                <div class="card-body">
-                    <h5 class="card-title" title="${movie.name}">${movie.name}</h5>
-                    <p class="card-text" title="${movie.origin_name}">${movie.origin_name}</p>
-                    <p class="card-text">
-                        <small class="text">Năm: ${movie.year}</small>
-                        <small class="text ms-2">
-                            ${movie.type === 'series' ? `${movie.episode_current}` : `Thời lượng: ${movie.time}`}
-                        </small>
-                    </p>
-                </div>
+        moviesHTML += `
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3">
+                <a href="./movieDetails.html?slug=${movie.slug}" class="text-decoration-none">
+                    <div class="card movie-card">
+                        <div class="card-poster">
+                            <img src="https://phimimg.com/${movie.poster_url}" 
+                                class="card-img-top" 
+                                alt="${movie.name}"
+                                loading="lazy"
+                                onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                            <div class="card-overlay">
+                                <div class="overlay-content">
+                                    <span class="btn-play">
+                                        <i class="fas fa-play-circle fa-3x"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" title="${movie.name}">${movie.name}</h5>
+                            <p class="card-text" title="${movie.origin_name}">${movie.origin_name}</p>
+                            <p class="card-text">
+                                <small class="text">Năm: ${movie.year}</small>
+                                <small class="text ms-2">
+                                    ${movie.episode_current}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </a>
             </div>
         `;
-        
-        fragment.appendChild(movieDiv);
     });
     
-    movieContainer.appendChild(fragment);
+    movieContainer.innerHTML = moviesHTML;
 }
 
-function updatePagination(currentPage) {
+function updatePagination(currentPage, totalPages) {
     const pagination = document.getElementById('pagination');
-    const pageLinks = pagination.querySelectorAll('.page-link[data-page]');
     const prevButton = document.getElementById('prevPage');
     const nextButton = document.getElementById('nextPage');
     
-    // Xóa các nút số trang cũ
-    const oldPageButtons = pagination.querySelectorAll('li:not(:first-child):not(:last-child)');
-    oldPageButtons.forEach(button => button.remove());
-
-    // Tính toán phạm vi số trang cần hiển thị
+    // Xóa các nút số trang hiện tại
+    const pageItems = pagination.querySelectorAll('li:not(:first-child):not(:last-child)');
+    pageItems.forEach(item => item.remove());
+    
+    // Tính toán phạm vi số trang cần hiển thị (chỉ 3 số)
     let startPage = Math.max(1, currentPage - 1);
-    let endPage = startPage + 2;
+    let endPage = Math.min(startPage + 2, totalPages);
+    
+    // Điều chỉnh startPage nếu endPage đã ở cuối
+    if (endPage - startPage < 2) {
+        startPage = Math.max(1, endPage - 2);
+    }
     
     // Thêm các nút số trang mới
     const nextPageItem = pagination.querySelector('li:last-child');
@@ -88,6 +102,7 @@ function updatePagination(currentPage) {
     
     // Cập nhật trạng thái nút Prev và Next
     prevButton.parentElement.classList.toggle('disabled', currentPage === 1);
+    nextButton.parentElement.classList.toggle('disabled', currentPage === totalPages);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -103,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pageLink.id === 'prevPage' && currentPage > 1) {
             currentPage--;
             fetchMovies(currentPage);
-        } else if (pageLink.id === 'nextPage') {
+        } else if (pageLink.id === 'nextPage' && !pageLink.parentElement.classList.contains('disabled')) {
             currentPage++;
             fetchMovies(currentPage);
         } else {
@@ -112,6 +127,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentPage = parseInt(page);
                 fetchMovies(currentPage);
             }
+        }
+        
+        // Cuộn đến tiêu đề "Phim Bộ"
+        const pageTitle = document.querySelector('.page-title');
+        if (pageTitle) {
+            pageTitle.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // Fallback nếu không tìm thấy tiêu đề
+            window.scrollTo({
+                top: 500,
+                behavior: 'smooth'
+            });
         }
     });
 }); 
