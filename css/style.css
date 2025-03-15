@@ -43,11 +43,126 @@ body {
   padding: 20px;
 }
 
-.name-main{
+.card-poster {
+  position: relative;
+}
+
+.episode-badge {
+  position: absolute;
+  left: 10px;
+  /* Changed from right to left */
+  top: 10px;
+  background: rgb(71, 132, 19);
+  color: #fff;
+  padding: 4px 6px 2px;
+  z-index: 9;
+  border-radius: 2px;
+  background-size: 200% 100%;
+  background-image: linear-gradient(to right, #C02425 0%, #F0CB35 51%, #C02425 100%);
+  transition: .7s;
+  text-transform: capitalize;
+  min-width: fit-content;
+  max-width: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.movie-card:hover .episode-badge {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Bookmark css */
+.bookmark-badge i {
+  transition: transform 0.3s ease;
+}
+
+.bookmark-badge.active i {
+  transform: scale(1.2);
+  color: #F0CB35;
+}
+
+.bookmark-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.bookmark-badge i {
+  color: white;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.bookmark-badge:hover {
+  transform: scale(1.15);
+  background: rgba(255, 61, 0, 0.8);
+}
+
+.bookmark-badge.active {
+  background: var(--primary-color);
+}
+
+.bookmark-badge.active i {
+  color: white;
+  transform: scale(1.1);
+}
+
+.bookmark-badge.remove-btn {
+  background-color: rgba(255, 0, 0, 0.7);
+  /* Màu đỏ nhạt */
+  color: white;
+}
+
+.bookmark-badge.remove-btn:hover {
+  background-color: #ff0000;
+  /* Màu đỏ đậm khi hover */
+  transform: scale(1.1);
+}
+
+.bookmark-badge.remove-btn .fa-times {
+  font-size: 18px;
+  /* Điều chỉnh kích thước icon X */
+}
+
+/* Hiệu ứng khi click vào bookmark */
+.bookmark-badge.clicked {
+  animation: bookmark-pulse 0.5s ease;
+}
+
+@keyframes bookmark-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.name-main {
   color: #cf8e19;
 }
 
-.name-sub{
+.name-sub {
   color: #a0a0a0;
 }
 
@@ -199,6 +314,7 @@ body {
     outline-offset: 0;
   }
 }
+
 /* Tiêu đề phim */
 .movie-details h1 {
   color: #cf8e19;
@@ -210,7 +326,47 @@ body {
 }
 
 /* Nút xem phim */
-/* From Uiverse.io by mrhyddenn */ 
+.btn-follow-movie {
+  padding: 8px 12px;
+  border: none;
+  font-size: 17px;
+  color: #fff;
+  border-radius: 7px;
+  letter-spacing: 4px;
+  font-weight: 500;
+  transition: 0.5s;
+  transition-property: box-shadow;
+  background: #4CAF50;
+  box-shadow: 0 0 25px rgba(76, 175, 80, 0.5);
+  margin-left: 30px;
+}
+
+.btn-follow-movie:hover {
+  box-shadow: 0 0 5px #4CAF50,
+    0 0 25px #4CAF50,
+    0 0 50px #4CAF50,
+    0 0 100px #4CAF50;
+}
+
+.btn-follow-movie.active {
+  background: #f44336;
+  box-shadow: 0 0 25px rgba(244, 67, 54, 0.5);
+}
+
+.btn-follow-movie.active:hover {
+  box-shadow: 0 0 5px #f44336,
+    0 0 25px #f44336,
+    0 0 50px #f44336,
+    0 0 100px #f44336;
+}
+
+/* Thêm container cho các nút */
+.movie-buttons {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .btn-play-movie {
   padding: 8px 12px;
   border: none;
@@ -224,15 +380,15 @@ body {
 }
 
 .btn-play-movie {
-  background: rgb(0,140,255);
-  box-shadow: 0 0 25px rgb(0,140,255);
+  background: rgb(0, 140, 255);
+  box-shadow: 0 0 25px rgb(0, 140, 255);
 }
 
 .btn-play-movie:hover {
-  box-shadow: 0 0 5px rgb(0,140,255),
-              0 0 25px rgb(0,140,255),
-              0 0 50px rgb(0,140,255),
-              0 0 100px rgb(0,140,255);
+  box-shadow: 0 0 5px rgb(0, 140, 255),
+    0 0 25px rgb(0, 140, 255),
+    0 0 50px rgb(0, 140, 255),
+    0 0 100px rgb(0, 140, 255);
 }
 
 .movie-details .name-sub {
@@ -252,8 +408,9 @@ body {
   border-radius: 3px;
   font-size: 15px;
   text-transform: capitalize;
-  
+
 }
+
 /* Thông tin chi tiết */
 .body-test-details {
   background-color: #2d2d2d;
@@ -268,6 +425,7 @@ body {
   color: #d0d0d0;
   /* Màu xám nhạt cho nội dung */
 }
+
 .body-test-details strong {
   color: #ffffff;
   /* Màu trắng cho tiêu đề trong nội dung */
@@ -311,7 +469,7 @@ body {
 .movie-content h4 {
   color: #ffffff;
   margin-bottom: 1rem;
-  
+
 }
 
 /*Responsive design */
@@ -356,16 +514,68 @@ body {
     }
 
   }
+  .bookmark-header {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Thay đổi từ center thành space-between */
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .bookmark-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .bookmark-actions {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    width: 140px;
+    right: 0;
+  }
+  
+  .back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
   .movie-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 10px 0 30px;
+    gap: 5px;
+    padding: 10px 0 20px;
   }
+
+  .card-poster {
+    height: 270px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    height: 100px;
+  }
+
   .movie-card {
     height: 10%;
   }
-  .movie-meta{
+
+  .movie-meta {
     display: flex;
   }
 }
@@ -583,7 +793,7 @@ body {
 @media (max-width: 768px) {
 
   /* Movie Card Styles */
-  
+
 }
 
 
@@ -830,6 +1040,8 @@ body {
   padding-left: 10px;
 }
 
+
+
 /* Responsive design */
 @media (max-width: 768px) {
   .movie-card {
@@ -862,6 +1074,7 @@ body {
   }
 }
 
+
 /* Footer styling */
 .footer {
   background-color: #1a1a1a;
@@ -886,4 +1099,199 @@ body {
 
 .footer-link:hover {
   color: #ff4500;
+}
+
+/* Bookmark icon trong header */
+.navbar .nav-link .fa-bookmark {
+  color: var(--primary-light);
+  transition: all 0.3s ease;
+}
+
+.navbar .nav-link:hover .fa-bookmark {
+  transform: scale(1.2);
+  color: var(--primary-color);
+}
+
+/* Badge hiển thị số lượng bookmark */
+.bookmark-count {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  transform-origin: center;
+
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Hiệu ứng khi có bookmark mới */
+.bookmark-count.new {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-5px);
+  }
+
+  60% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Trang bookmark.html */
+.bookmark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bookmark-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bookmark-title i {
+  color: var(--primary-color);
+  font-size: 1.5em;
+}
+
+.bookmark-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bookmark-actions button {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.bookmark-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 61, 0, 0.3);
+}
+
+/* Hiệu ứng cho thông báo không có bookmark */
+.no-bookmarks-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin: 30px 0;
+}
+
+.no-bookmarks-icon {
+  font-size: 64px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.no-bookmarks-container h3 {
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.no-bookmarks-container p {
+  margin-bottom: 25px;
+  color: var(--text-muted);
+}
+
+.no-bookmarks-container .btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.no-bookmarks-container .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 61, 0, 0.4);
+}
+
+/* Hiệu ứng cho toast notification */
+.toast-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.3s ease, fadeOut 0.3s 2.2s forwards;
+}
+
+.toast-notification i {
+  color: var(--primary-color);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }

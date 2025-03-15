@@ -44,7 +44,11 @@ function displayMovieDetails(movie) {
         console.error('Invalid emptyStars:', emptyStars);
         emptyStars = 0; // Đặt về 0 nếu không hợp lệ
     }
-
+    
+    // Kiểm tra xem phim đã được bookmark chưa (dùng slug)
+    const bookmarks = JSON.parse(localStorage.getItem('movieBookmarks')) || [];
+    const isBookmarked = bookmarks.some(m => m.slug === movie.slug);
+    
     // Hiển thị thông tin chi tiết phim
     detailsContainer.innerHTML = `
         <div class="row movie-details">
@@ -58,7 +62,12 @@ function displayMovieDetails(movie) {
                     ${showDirectorBadge ? `<span class="badge bg-success me-2">${movie.director}</span>` : ''}
                     ${movie.is_copyright ? '<span class="badge bg-danger">Bản quyền</span>' : ''}
                 </div>
-                <button class="btn-play-movie btn-primary mt-5  mb-5" id="watchFirstEpisode">Xem phim</button>
+                <div class="movie-buttons">
+                    <button class="btn-play-movie" id="watchFirstEpisode">Xem phim</button>
+                    <button class="btn-follow-movie ${isBookmarked ? 'active' : ''}" id="followMovie">
+                        ${isBookmarked ? 'Hủy theo dõi' : 'Theo dõi'}
+                    </button>
+                </div>
             </div>
             <div class="col-md-8">
                 <h1 class="sub-main">${movie.name}</h1>
@@ -91,9 +100,97 @@ function displayMovieDetails(movie) {
             console.error('Không có thông tin slug để mở trang xem phim.');
         }
     });
+    
+    // Thêm sự kiện click cho nút "Theo Dõi"/"Hủy theo dõi"
+    document.getElementById('followMovie').addEventListener('click', () => {
+        toggleFollowMovie(movie);
+    });
 }
 
+// Hàm xử lý theo dõi/hủy theo dõi phim
+function toggleFollowMovie(movie) {
+    try {
+        // Tạo đối tượng phim để lưu vào bookmark
+        const movieData = {
+            slug: movie.slug,
+            name: movie.name,
+            origin_name: movie.origin_name,
+            poster_url: movie.poster_url,
+            year: movie.year,
+            episode_current: movie.episode_current,
+            time: movie.time
+        };
+        
+        // Lấy danh sách bookmark hiện tại
+        let bookmarks = [];
+        try {
+            const storedBookmarks = localStorage.getItem('movieBookmarks');
+            bookmarks = storedBookmarks ? JSON.parse(storedBookmarks) : [];
+            if (!Array.isArray(bookmarks)) bookmarks = [];
+        } catch (e) {
+            console.error('Error parsing bookmarks:', e);
+            bookmarks = [];
+        }
+        
+        const followButton = document.getElementById('followMovie');
+        
+        // Kiểm tra xem phim đã được bookmark chưa (dùng slug)
+        const existingIndex = bookmarks.findIndex(m => m.slug === movie.slug);
+        
+        if (existingIndex !== -1) {
+            // Nếu phim đã tồn tại, xóa khỏi danh sách
+            bookmarks.splice(existingIndex, 1);
+            followButton.textContent = 'Theo dõi';
+            followButton.classList.remove('active');
+            showNotification('Đã xóa phim khỏi danh sách yêu thích');
+        } else {
+            // Nếu phim chưa tồn tại, thêm vào danh sách
+            bookmarks.push(movieData);
+            followButton.textContent = 'Hủy theo dõi';
+            followButton.classList.add('active');
+            showNotification('Đã thêm phim vào danh sách yêu thích');
+        }
+        
+        // Lưu lại danh sách đã cập nhật
+        localStorage.setItem('movieBookmarks', JSON.stringify(bookmarks, null, 0));
+        
+        // Cập nhật số lượng bookmark
+        updateBookmarkCount();
+    } catch (error) {
+        console.error('Lỗi khi xử lý theo dõi phim:', error);
+    }
+}
 
+// Hiển thị thông báo
+function showNotification(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+        <i class="fas fa-bookmark me-2"></i>
+        ${message}
+    `;
+    
+    document.body.appendChild(toast);
+    toast.style.display = 'block';
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 2500);
+}
+
+// Cập nhật số lượng bookmark
+function updateBookmarkCount() {
+    try {
+        const bookmarks = JSON.parse(localStorage.getItem('movieBookmarks')) || [];
+        const countElement = document.querySelector('.bookmark-count');
+        if (countElement) {
+            countElement.textContent = bookmarks.length;
+            countElement.style.display = bookmarks.length > 0 ? 'inline-block' : 'none';
+        }
+    } catch (error) {
+        console.error('Lỗi khi cập nhật số lượng bookmark:', error);
+    }
+}
 
 // Lấy slug từ URL và load thông tin phim
 document.addEventListener('DOMContentLoaded', () => {
@@ -107,4 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         document.getElementById('movieDetails').innerHTML = '<h2>Không tìm thấy phim</h2>';
     }
-}); 
+
+    // Cập nhật số lượng bookmark khi tải trang
+    updateBookmarkCount();
+});
