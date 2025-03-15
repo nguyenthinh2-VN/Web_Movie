@@ -801,27 +801,24 @@
       >
         <ul class="pagination justify-content-center" id="pagination">
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous" id="prevPage">
-              <span aria-hidden="true"
-                ><i class="fas fa-chevron-left"></i
-              ></span>
-            </a>
+            <button class="page-link" aria-label="Previous" id="prevPage">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </li>
+          <li class="page-item active">
+            <!-- Thêm class active cho trang đầu tiên -->
+            <button class="page-link" data-page="1">1</button>
           </li>
           <li class="page-item">
-            <a class="page-link" href="#" data-page="1">1</a>
+            <button class="page-link" data-page="2">2</button>
           </li>
           <li class="page-item">
-            <a class="page-link" href="#" data-page="2">2</a>
+            <button class="page-link" data-page="3">3</button>
           </li>
           <li class="page-item">
-            <a class="page-link" href="#" data-page="3">3</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next" id="nextPage">
-              <span aria-hidden="true"
-                ><i class="fas fa-chevron-right"></i
-              ></span>
-            </a>
+            <button class="page-link" aria-label="Next" id="nextPage">
+              <i class="fas fa-chevron-right"></i>
+            </button>
           </li>
         </ul>
       </nav>
@@ -898,79 +895,43 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Animation Script -->
-    <!-- Animation Script -->
-<script>
-  // Giả lập độ trễ 2 giây để kiểm tra
-  setTimeout(function () {
-    const loading = document.getElementById("loading");
-    loading.style.display = "none";
-  }, 2000); // 2000ms = 2 giây
+    <script>
+      // Giả lập độ trễ 2 giây để kiểm tra
+      setTimeout(function () {
+        const loading = document.getElementById("loading");
+        loading.style.display = "none";
+      }, 2000); // 2000ms = 2 giây
 
-  // Navbar scroll effect
-  window.addEventListener("scroll", function () {
-    const navbar = document.querySelector(".navbar");
-    if (window.scrollY > 100) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-  });
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+      // Kiểm tra kích thước màn hình và thêm class 'show' cho dropdown-menu
+      document.addEventListener("DOMContentLoaded", function () {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (window.innerWidth > 768) {
+          // Kiểm tra nếu là desktop
+          dropdownMenu.classList.add("show");
+        } else {
+          dropdownMenu.classList.remove("show"); // Đảm bảo không có class 'show' trên mobile
+        }
+      });
 
-  // Kiểm tra kích thước màn hình và điều khiển dropdown
-  document.addEventListener("DOMContentLoaded", function () {
-    const dropdownMenu = document.querySelector(".dropdown-menu");
-    const dropdownToggle = document.querySelector("#categoryDropdown");
-
-    // Hàm kiểm tra và cập nhật trạng thái dropdown menu
-    function updateDropdown() {
-      if (window.innerWidth > 768) {
-        // Desktop: hiển thị dropdown menu mặc định
-        dropdownMenu.classList.add("show");
-        dropdownToggle.setAttribute("aria-expanded", "true");
-      } else {
-        // Mobile: ẩn dropdown menu mặc định
-        dropdownMenu.classList.remove("show");
-        dropdownToggle.setAttribute("aria-expanded", "false");
-      }
-    }
-
-    // Gọi hàm khi tải trang
-    updateDropdown();
-
-    // Cập nhật lại khi thay đổi kích thước cửa sổ
-    window.addEventListener("resize", function () {
-      updateDropdown();
-    });
-
-    // Xử lý sự kiện click/touch cho dropdown trên mobile
-    dropdownToggle.addEventListener("click", function (e) {
-      if (window.innerWidth <= 768) {
-        e.preventDefault(); // Ngăn chặn hành vi mặc định của link
-        e.stopPropagation(); // Ngăn chặn sự kiện lan ra ngoài
-        dropdownMenu.classList.toggle("show");
-        const isExpanded = dropdownMenu.classList.contains("show");
-        dropdownToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
-      }
-    });
-
-    // Đóng dropdown khi click ra ngoài trên mobile
-    document.addEventListener("click", function (e) {
-      if (window.innerWidth <= 768 && !dropdownToggle.contains(e.target)) {
-        dropdownMenu.classList.remove("show");
-        dropdownToggle.setAttribute("aria-expanded", "false");
-      }
-    });
-  });
-  dropdownToggle.addEventListener("touchstart", function (e) {
-  if (window.innerWidth <= 768) {
-    e.preventDefault();
-    e.stopPropagation();
-    dropdownMenu.classList.toggle("show");
-    const isExpanded = dropdownMenu.classList.contains("show");
-    dropdownToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
-  }
-}, { passive: false });
-</script>
+      // Cập nhật lại khi thay đổi kích thước cửa sổ
+      window.addEventListener("resize", function () {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (window.innerWidth > 768) {
+          dropdownMenu.classList.add("show");
+        } else {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+    </script>
 
     <!-- Search Handler -->
     <script src="js/searchHandler.js"></script>

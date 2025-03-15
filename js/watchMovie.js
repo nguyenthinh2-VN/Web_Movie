@@ -3,6 +3,22 @@ let movieData = null;
 let episodesData = null;
 let currentEpisode = null;
 
+// Hàm lấy danh sách bookmark từ localStorage (sử dụng movieBookmarks)
+function getBookmarks() {
+    const bookmarks = localStorage.getItem('movieBookmarks');
+    return bookmarks ? JSON.parse(bookmarks) : [];
+}
+
+// Hàm cập nhật số lượng bookmark trong navbar
+function updateBookmarkCount() {
+    const bookmarks = getBookmarks();
+    const bookmarkCountElement = document.querySelector('.bookmark-count');
+    if (bookmarkCountElement) {
+        bookmarkCountElement.textContent = bookmarks.length;
+        bookmarkCountElement.style.display = bookmarks.length > 0 ? 'inline-block' : 'none';
+    }
+}
+
 // Hàm khởi tạo khi trang được tải
 document.addEventListener('DOMContentLoaded', () => {
     // Lấy thông tin từ URL
@@ -10,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const slug = urlParams.get('slug');
     const episodeSlug = urlParams.get('ep') || 'tap-01'; // Mặc định là tập 1
     
+    // Cập nhật số lượng bookmark ngay khi trang tải
+    updateBookmarkCount();
+
     if (slug) {
         // Lưu slug vào localStorage để sử dụng cho nút "Quay lại trang chi tiết"
         localStorage.setItem('lastMovieSlug', slug);
@@ -223,4 +242,4 @@ function showError(message) {
     document.getElementById('episodeTitle').textContent = 'Lỗi';
     document.getElementById('videoPlayer').innerHTML = '';
     document.getElementById('episodeList').innerHTML = '';
-} 
+}
