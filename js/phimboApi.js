@@ -1,5 +1,5 @@
 let currentPage = 1;
-const ITEMS_PER_PAGE = 16;
+const ITEMS_PER_PAGE = 16; // Số phim hiển thị trên mỗi trang
 
 async function fetchMovies(page) {
     try {
@@ -25,55 +25,44 @@ function displayMovies(movies) {
         return;
     }
     
-    // Kiểm tra dữ liệu API
-    console.log('Dữ liệu phim bộ:', movies);
-    
     let moviesHTML = '';
     
     movies.forEach(movie => {
-        // Xác định số tập từ dữ liệu API
-        const episodeCurrent = movie.episode_current || movie.current_episode || movie.episode || null;
-        
         moviesHTML += `
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3">
-                <div class="card movie-card" data-slug="${movie.slug}">
-                    <div class="card-poster">
-                        <img src="https://phimimg.com/${movie.poster_url}" 
-                            class="card-img-top" 
-                            alt="${movie.name}"
-                            loading="lazy"
-                            onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
-                        <div class="card-overlay" onclick="location.href='./movieDetails.html?slug=${movie.slug}'">
-                            <div class="overlay-content">
-                                <span class="btn-play">
-                                    <i class="fas fa-play-circle fa-3x"></i>
-                                </span>
+                <a href="./movieDetails.html?slug=${movie.slug}" class="text-decoration-none">
+                    <div class="card movie-card">
+                        <div class="card-poster">
+                            <img src="https://phimimg.com/${movie.poster_url}" 
+                                class="card-img-top" 
+                                alt="${movie.name}"
+                                loading="lazy"
+                                onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                            <div class="card-overlay">
+                                <div class="overlay-content">
+                                    <span class="btn-play">
+                                        <i class="fas fa-play-circle fa-3x"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        ${episodeCurrent ? `<div class="episode-badge">${episodeCurrent}</div>` : ''}
-                        <div class="bookmark-badge" onclick="event.stopPropagation(); toggleBookmark(this.closest('.movie-card'));">
-                            <i class="fas fa-bookmark"></i>
+                        <div class="card-body">
+                            <h5 class="card-title" title="${movie.name}">${movie.name}</h5>
+                            <p class="card-text" title="${movie.origin_name}">${movie.origin_name}</p>
+                            <p class="card-text">
+                                <small class="text">Năm: ${movie.year}</small>
+                                <small class="text ms-2">
+                                    ${movie.episode_current}
+                                </small>
+                            </p>
                         </div>
                     </div>
-                    <div class="card-body" onclick="location.href='./movieDetails.html?slug=${movie.slug}'">
-                        <h5 class="card-title" title="${movie.name}">${movie.name}</h5>
-                        <p class="card-text" title="${movie.origin_name}">${movie.origin_name}</p>
-                        <p class="card-text">
-                            <small class="text">Năm: ${movie.year}</small>
-                            <small class="text ms-2">
-                                ${episodeCurrent ? `Tập: ${episodeCurrent}` : 'N/A'}
-                            </small>
-                        </p>
-                    </div>
-                </div>
+                </a>
             </div>
         `;
     });
     
     movieContainer.innerHTML = moviesHTML;
-
-    // Cập nhật trạng thái bookmark
-    updateBookmarkIcons();
 }
 
 function updatePagination(currentPage, totalPages) {
@@ -81,16 +70,20 @@ function updatePagination(currentPage, totalPages) {
     const prevButton = document.getElementById('prevPage');
     const nextButton = document.getElementById('nextPage');
     
+    // Xóa các nút số trang hiện tại
     const pageItems = pagination.querySelectorAll('li:not(:first-child):not(:last-child)');
     pageItems.forEach(item => item.remove());
     
+    // Tính toán phạm vi số trang cần hiển thị (chỉ 3 số)
     let startPage = Math.max(1, currentPage - 1);
     let endPage = Math.min(startPage + 2, totalPages);
     
+    // Điều chỉnh startPage nếu endPage đã ở cuối
     if (endPage - startPage < 2) {
         startPage = Math.max(1, endPage - 2);
     }
     
+    // Thêm các nút số trang mới
     const nextPageItem = pagination.querySelector('li:last-child');
     
     for (let i = startPage; i <= endPage; i++) {
@@ -107,108 +100,9 @@ function updatePagination(currentPage, totalPages) {
         pagination.insertBefore(li, nextPageItem);
     }
     
+    // Cập nhật trạng thái nút Prev và Next
     prevButton.parentElement.classList.toggle('disabled', currentPage === 1);
     nextButton.parentElement.classList.toggle('disabled', currentPage === totalPages);
-}
-
-function toggleBookmark(movieCard) {
-    if (!movieCard) return;
-
-    try {
-        const movie = {
-            slug: movieCard.dataset.slug,
-            name: movieCard.querySelector('.card-title').textContent.trim(),
-            origin_name: movieCard.querySelector('.card-text[title]').getAttribute('title').trim(),
-            poster_url: movieCard.querySelector('.card-img-top').src,
-            year: movieCard.querySelector('.text').textContent.replace('Năm: ', '').trim(),
-            episode_current: movieCard.querySelector('.episode-badge')?.textContent || null
-        };
-
-        let bookmarks = [];
-        const storedBookmarks = localStorage.getItem('movieBookmarks');
-        if (storedBookmarks) {
-            try {
-                bookmarks = JSON.parse(storedBookmarks);
-                if (!Array.isArray(bookmarks)) {
-                    bookmarks = [bookmarks];
-                }
-            } catch (parseError) {
-                console.error('Lỗi khi parse movieBookmarks:', parseError);
-                bookmarks = [];
-            }
-        }
-
-        const bookmarkIcon = movieCard.querySelector('.bookmark-badge');
-        const existingIndex = bookmarks.findIndex(m => m.slug === movie.slug);
-
-        if (existingIndex !== -1) {
-            bookmarks.splice(existingIndex, 1);
-            bookmarkIcon.classList.remove('active');
-            showNotification('Đã xóa phim khỏi danh sách yêu thích');
-        } else {
-            bookmarks.push(movie);
-            bookmarkIcon.classList.add('active');
-            showNotification('Đã thêm phim vào danh sách yêu thích');
-        }
-
-        localStorage.setItem('movieBookmarks', JSON.stringify(bookmarks, null, 0));
-        updateBookmarkCount();
-        console.log('Danh sách bookmark sau khi cập nhật:', bookmarks);
-    } catch (error) {
-        console.error('Lỗi khi xử lý bookmark:', error);
-    }
-}
-
-function updateBookmarkCount() {
-    try {
-        let bookmarks = [];
-        const storedBookmarks = localStorage.getItem('movieBookmarks');
-        if (storedBookmarks) {
-            try {
-                bookmarks = JSON.parse(storedBookmarks);
-                if (!Array.isArray(bookmarks)) {
-                    bookmarks = [bookmarks];
-                }
-            } catch (parseError) {
-                console.error('Lỗi khi parse movieBookmarks trong updateBookmarkCount:', parseError);
-                bookmarks = [];
-            }
-        }
-
-        const countElement = document.querySelector('.bookmark-count');
-        if (countElement) {
-            countElement.textContent = bookmarks.length;
-            countElement.style.display = bookmarks.length > 0 ? 'inline-block' : 'none';
-        }
-    } catch (error) {
-        console.error('Lỗi khi cập nhật số lượng bookmark:', error);
-    }
-}
-
-function updateBookmarkIcons() {
-    const bookmarks = JSON.parse(localStorage.getItem('movieBookmarks')) || [];
-
-    document.querySelectorAll('.movie-card').forEach(card => {
-        const movieSlug = card.dataset.slug;
-        const bookmarkIcon = card.querySelector('.bookmark-badge');
-        if (bookmarks.some(m => m.slug === movieSlug)) {
-            bookmarkIcon.classList.add('active');
-        } else {
-            bookmarkIcon.classList.remove('active');
-        }
-    });
-}
-
-function showNotification(message) {
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-    toast.innerHTML = `
-        <i class="fas fa-bookmark me-2"></i>
-        ${message}
-    `;
-    document.body.appendChild(toast);
-    toast.style.display = 'block';
-    setTimeout(() => toast.remove(), 2500);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -235,16 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
+        // Cuộn đến tiêu đề "Phim Bộ"
         const pageTitle = document.querySelector('.page-title');
         if (pageTitle) {
             pageTitle.scrollIntoView({ behavior: 'smooth' });
         } else {
+            // Fallback nếu không tìm thấy tiêu đề
             window.scrollTo({
                 top: 500,
                 behavior: 'smooth'
             });
         }
     });
-
-    updateBookmarkCount();
-});
+}); 

@@ -1,0 +1,45 @@
+{
+  "status": true,
+  "items": [
+    {
+      "name": "Mèo Siêu Quậy Ở Viện Bảo Tàng",
+      "slug": "meo-sieu-quay-o-vien-bao-tang",
+      "origin_name": "Cats In The Museum",
+      "poster_url": "https://phimimg.com/upload/vod/20250527-1/b7cc78834b332fb2ea6e38b681944ee9.jpg",
+      "thumb_url": "https://phimimg.com/upload/vod/20250527-1/644858d7da02db1daabcc531c8e61a90.jpg",
+      "year": 2023
+    },
+    {
+      "name": "Chín Mảnh Ghép Bí Ẩn",
+      "slug": "chin-manh-ghep-bi-an",
+      "origin_name": "Nine Puzzles",
+      "poster_url": "https://phimimg.com/upload/vod/20250522-1/7b6fa98b2285bb44a511a17fea3636e5.jpg",
+      "thumb_url": "https://phimimg.com/upload/vod/20250522-1/b0e789223c196b582cfcd32b02d2ffd7.jpg",
+      "year": 2025
+    },
+    {
+      "name": "Người Hùng Yếu Đuối 2",
+      "slug": "nguoi-hung-yeu-duoi-2",
+      "origin_name": "Weak Hero Class 2",
+      "poster_url": "https://phimimg.com/upload/vod/20250425-1/5d3a42f01c38d804162fd81b49ff7150.jpg",
+      "thumb_url": "https://phimimg.com/upload/vod/20250425-1/ff300b38850fa8687195369269bc306a.jpg",
+      "year": 2025
+    },
+    {
+      "name": "Người Hùng Yếu Đuối",
+      "slug": "nguoi-hung-yeu-duoi",
+      "origin_name": "Weak Hero Class 1",
+      "poster_url": "https://phimimg.com/upload/vod/20240419-1/039acee9d4ef9bc3f4d41f6cd17fcaf2.jpg",
+      "thumb_url": "https://phimimg.com/upload/vod/20240419-1/b7a64b4be03133e3eeab57788733b675.jpg",
+      "year": 2022
+    },
+    {
+      "name": "Mèo Béo Siêu Đẳng",
+      "slug": "meo-beo-sieu-dang",
+      "origin_name": "The Amazing Maurice",
+      "poster_url": "https://phimimg.com/upload/vod/20250527-1/3f4ef6ba93545472cf109737d58c3772.jpg",
+      "thumb_url": "https://phimimg.com/upload/vod/20250527-1/8d2564f830122c3f7e73f64e04017066.jpg",
+      "year": 2022
+    }
+  ]
+}

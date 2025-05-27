@@ -24,6 +24,16 @@ function displayMovieDetails(movie) {
                             movie.director.length === 1 && 
                             movie.director[0] === "Đang cập nhật";
     
+    // Set background image from thumb_url if available
+    if (movie.thumb_url) {
+        // Tạo một container mới cho ảnh nền
+        const mainContainer = document.querySelector('.container.mt-4');
+        mainContainer.classList.add('movie-details-bg');
+        
+        // Áp dụng ảnh nền trực tiếp không qua các bước tối ưu
+        mainContainer.style.backgroundImage = `url('${movie.thumb_url}')`;
+    }
+    
     // Tính toán số sao dựa trên vote_average
     const totalStars = 5;
     let voteAverage = parseFloat(movie.tmdb.vote_average); // Lấy vote_average từ API và chuyển đổi thành số

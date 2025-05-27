@@ -56,7 +56,36 @@
         font-family: "Roboto", sans-serif;
       }
 
-      /* Loader Animation */
+      /* Movie Details Background Optimization */
+      .movie-details-bg {
+        position: relative;
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+        padding: 30px 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        transition: background-image 0.5s ease-in-out;
+      }
+  
+
+      .movie-details-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(19, 20, 25, 0.85);
+        z-index: 0;
+        border-radius: 8px;
+      }
+
+      .movie-details-bg .row {
+        position: relative;
+        z-index: 1;
+      }
+
       /* Loader Animation */
       .loading-overlay {
         position: fixed;
@@ -618,7 +647,7 @@
                </a>
              </li>
              <li>
-               <a class="dropdown-item" href="./action.html">
+               <a class="dropdown-item" href="./ActionMovie.html">
                  <i class="fas fa-running"></i> Hành Động
                  <span class="genre-pill">180+</span>
                </a>

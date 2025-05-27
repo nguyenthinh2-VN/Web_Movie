@@ -153,7 +153,7 @@ function displaySearchResults(data) {
     
     data.items.forEach(movie => {
         resultsHTML += `
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3 w-100">
                 <a href="movieDetails.html?slug=${movie.slug}" class="text-decoration-none">
                     <div class="card movie-card">
                         <div class="card-poster">

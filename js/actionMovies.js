@@ -3,7 +3,7 @@ const ITEMS_PER_PAGE = 16;
 
 async function fetchMovies(page) {
     try {
-        const response = await fetch(`https://phimapi.com/v1/api/danh-sach/phim-le?page=${page}&limit=${ITEMS_PER_PAGE}`);
+        const response = await fetch(`https://phimapi.com/v1/api/the-loai/hanh-dong?page=${page}&limit=${ITEMS_PER_PAGE}`);
         const data = await response.json();
         
         if (data.status === "success") {
@@ -25,22 +25,29 @@ function displayMovies(movies) {
         return;
     }
     
-    console.log('Dữ liệu phim lẻ:', movies);
+    console.log('Dữ liệu hoạt hình:', movies); // Debug dữ liệu từ API
     
     let moviesHTML = '';
     
     movies.forEach(movie => {
-        const statusBadge = movie.status || movie.episode_current || null;
-        
+        const episodeCurrent = movie.episode_current || movie.current_episode || movie.episode || null;
+        // Kiểm tra và chuẩn hóa poster_url
+        let posterUrl = movie.poster_url || '';
+        if (posterUrl && !posterUrl.startsWith('http')) {
+            posterUrl = `https://phimimg.com/${posterUrl.startsWith('/') ? posterUrl.substring(1) : posterUrl}`;
+        } else if (!posterUrl) {
+            posterUrl = 'https://via.placeholder.com/300x450?text=No+Image';
+        }
+
         moviesHTML += `
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3 w-100">
                 <div class="card movie-card" data-slug="${movie.slug}">
                     <div class="card-poster">
-                        <img src="https://phimimg.com/${movie.poster_url}" 
-                            class="card-img-top" 
-                            alt="${movie.name}"
-                            loading="lazy"
-                            onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                        <img src="${posterUrl}" 
+                             class="card-img-top" 
+                             alt="${movie.name || 'No Name'}"
+                             loading="lazy"
+                             onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'; this.onerror=null;">
                         <div class="card-overlay" onclick="location.href='./movieDetails.html?slug=${movie.slug}'">
                             <div class="overlay-content">
                                 <span class="btn-play">
@@ -48,18 +55,18 @@ function displayMovies(movies) {
                                 </span>
                             </div>
                         </div>
-                        ${statusBadge ? `<div class="episode-badge">${statusBadge}</div>` : ''}
+                        ${episodeCurrent ? `<div class="episode-badge">${episodeCurrent}</div>` : ''}
                         <div class="bookmark-badge" onclick="event.stopPropagation(); toggleBookmark(this.closest('.movie-card'));">
                             <i class="fas fa-bookmark"></i>
                         </div>
                     </div>
                     <div class="card-body" onclick="location.href='./movieDetails.html?slug=${movie.slug}'">
-                        <h5 class="card-title" title="${movie.name}">${movie.name}</h5>
-                        <p class="card-text" title="${movie.origin_name}">${movie.origin_name}</p>
+                        <h5 class="card-title" title="${movie.name || 'No Name'}">${movie.name || 'No Name'}</h5>
+                        <p class="card-text" title="${movie.origin_name || 'No Origin Name'}">${movie.origin_name || 'No Origin Name'}</p>
                         <p class="card-text">
-                            <small class="text">Năm: ${movie.year}</small>
+                            <small class="text">Năm: ${movie.year || 'N/A'}</small>
                             <small class="text ms-2">
-                                Thời lượng: ${movie.time || 'N/A'}
+                                ${episodeCurrent || `Thời lượng: ${movie.time || 'N/A'}`}
                             </small>
                         </p>
                     </div>
@@ -115,9 +122,10 @@ function toggleBookmark(movieCard) {
             slug: movieCard.dataset.slug,
             name: movieCard.querySelector('.card-title').textContent.trim(),
             origin_name: movieCard.querySelector('.card-text[title]').getAttribute('title').trim(),
-            poster_url: movieCard.querySelector('.card-img-top').src,
+            poster_url: movieCard.querySelector('.card-img-top').src.replace('https://phimimg.com/', '').replace('https://via.placeholder.com/300x450?text=No+Image', ''),
             year: movieCard.querySelector('.text').textContent.replace('Năm: ', '').trim(),
-            time: movieCard.querySelector('.text.ms-2')?.textContent.replace('Thời lượng: ', '').trim() || 'N/A'
+            episode_current: movieCard.querySelector('.episode-badge')?.textContent || null,
+            time: movieCard.querySelector('.text.ms-2')?.textContent.includes('Thời lượng') ? movieCard.querySelector('.text.ms-2').textContent.replace('Thời lượng: ', '').trim() : null
         };
 
         let bookmarks = [];
@@ -231,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        const pageTitle = document.querySelector('.page-title');
+        const pageTitle = document.querySelector('.section-title');
         if (pageTitle) {
             pageTitle.scrollIntoView({ behavior: 'smooth' });
         } else {

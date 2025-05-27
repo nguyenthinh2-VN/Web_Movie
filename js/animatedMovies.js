@@ -40,7 +40,7 @@ function displayMovies(movies) {
         }
 
         moviesHTML += `
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-3 w-100">
                 <div class="card movie-card" data-slug="${movie.slug}">
                     <div class="card-poster">
                         <img src="${posterUrl}" 

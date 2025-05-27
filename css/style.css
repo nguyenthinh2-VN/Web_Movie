@@ -36,11 +36,43 @@ body {
   line-height: 1.6;
 }
 
+
+
 /* Container chính */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+
+.movie-details-bg .section-title,
+.movie-details-bg {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.movie-details-bg .section-title {
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.movie-details-bg .movie-details {
+  background-color: rgba(0, 0, 0, 0.01);
+  padding: 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(0px);
+}
+
+.movie-details-bg .body-test-details p {
+  color: #f0f0f0;
+  
+}
+
+.movie-details-bg .movie-content {
+  color: #e0e0e0;
 }
 
 .card-poster {
@@ -413,16 +445,17 @@ body {
 
 /* Thông tin chi tiết */
 .body-test-details {
-  background-color: #2d2d2d;
+  background-color: rgba(45, 45, 45, 0.5); /* Changed from solid to semi-transparent */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
 }
 
 .body-test-details p {
   margin-bottom: 0.8rem;
   font-size: 1.1rem;
-  color: #d0d0d0;
+  color: #f0f0f0; /* Brightened text color for better contrast */
   /* Màu xám nhạt cho nội dung */
 }
 
@@ -456,14 +489,15 @@ body {
 
 /* Nội dung phim */
 .movie-content {
-  background-color: #2d2d2d;
+  background-color: rgba(45, 45, 45, 0.5); /* Changed from solid to semi-transparent */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  color: #c0c0c0;
+  color: #f0f0f0; /* Brightened text color for better contrast */
   /* Màu xám nhạt cho nội dung phim */
   font-size: 1.1rem;
   text-align: justify;
+  backdrop-filter: blur(5px);
 }
 
 .movie-content h4 {
@@ -471,112 +505,73 @@ body {
   margin-bottom: 1rem;
 
 }
-
-/*Responsive design */
-@media (max-width: 768px) {
-  .movie-details h1 {
-    font-size: 2rem;
+/* Movie List - Base Styles */
+.movie-list {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+/* Responsive Design */
+@media (max-width: 767px) {
+  /* Mobile: 2 cột */
+  .movie-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
-
-  .movie-details .name-sub {
-    font-size: 1rem;
+  .movie-card {
+    width: 100%;
+    height: auto;
   }
-
-  .body-test-details,
-  .movie-content {
-    padding: 10px;
+  .card-img-top {
+    height: 200px;
   }
-
+  .card-title {
+    font-size: 14px;
+  }
+  .card-text {
+    font-size: 12px;
+  }
 }
 
-/* Tối ưu hóa hiển thị trên màn hình nhỏ */
-@media (max-width: 576px) {
-  .movie-meta .badge {
-    display: block;
-    margin: 10px 0;
-    text-align: center;
-  }
-
-  .episode-grid {
-    .episode-grid {
-      /* Giảm kích thước tối thiểu của cột để hiển thị nhiều tập hơn trên màn hình nhỏ */
-      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-      gap: 0.3rem;
-    }
-
-    .btn.btn-outline-primary {
-      font-size: 0.8rem;
-      /* Giảm kích thước chữ để hiển thị tốt hơn */
-      padding: 0.3rem 0.5rem;
-      /* Giảm padding cho nút */
-      white-space: nowrap;
-      /* Ngăn chữ bị xuống dòng trong nút */
-    }
-
-  }
-  .bookmark-header {
-    height: 50px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between; /* Thay đổi từ center thành space-between */
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .bookmark-title {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .bookmark-actions {
-    height: 50px;
-    display: flex;
-    align-items: center;
-    width: 140px;
-    right: 0;
-  }
-  
-  .back-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 8px 16px;
-    border-radius: 8px;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .back-button:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Tablet: 3 cột */
   .movie-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 5px;
-    padding: 10px 0 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
   }
-
-  .card-poster {
-    height: 270px;
-    object-fit: cover;
-  }
-
-  .card-body {
-    height: 100px;
-  }
-
   .movie-card {
-    height: 10%;
+    width: 100%;
+    height: auto;
   }
+  .card-img-top {
+    height: 250px;
+  }
+  .card-title {
+    font-size: 16px;
+  }
+  .card-text {
+    font-size: 14px;
+  }
+}
 
-  .movie-meta {
-    display: flex;
+@media (min-width: 992px) {
+  /* Desktop: 4 cột */
+  .movie-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .movie-card {
+    width: 100%;
+    height: auto;
+  }
+  .card-img-top {
+    height: 300px;
+  }
+  .card-title {
+    font-size: 18px;
+  }
+  .card-text {
+    font-size: 16px;
   }
 }
 
@@ -790,11 +785,6 @@ body {
   color: var(--primary-light);
 }
 
-@media (max-width: 768px) {
-
-  /* Movie Card Styles */
-
-}
 
 
 
@@ -1042,37 +1032,8 @@ body {
 
 
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .movie-card {
-    width: calc(50% - 20px);
-  }
 
-  .header {
-    flex-direction: column;
-  }
 
-  .nav-menu {
-    margin-top: 10px;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .search-container {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .search-input {
-    width: calc(100% - 100px);
-  }
-}
-
-@media (max-width: 480px) {
-  .movie-card {
-    width: 100%;
-  }
-}
 
 
 /* Footer styling */
@@ -1294,4 +1255,43 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+}
+
+/* Progressive Image Loading Styles */
+.progressive-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #242424;
+}
+
+.img-blur-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.05);
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+.img-main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.img-loaded {
+  opacity: 1;
+}
+
+.img-loaded ~ .img-blur-placeholder {
+  opacity: 0;
 }
