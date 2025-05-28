@@ -39,6 +39,8 @@
     />
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="/css/carousel.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 
     <style>
       :root {
@@ -732,19 +734,19 @@
 
     <!-- Main Content -->
     <div class="container mt-4">
-      <h2 class="section-title animate-me" data-delay="300">
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="300">
         <i class="fas fa-film me-2"></i>Phim nổi bật
       </h2>
       
       <!-- 3D Carousel Section -->
-      <div class="carousel-container animate-me" data-delay="400">
+      <div class="carousel-container" data-aos="fade-up" data-aos-delay="400">
         <!-- Carousel content will be loaded by JavaScript -->
       </div>
 
-      <h2 class="section-title animate-me" data-delay="500">
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="500">
         <i class="fas fa-heart me-2"></i>Phim hoạt hình
       </h2>
-      <div class="scroll-container animate-me" data-delay="600">
+      <div class="scroll-container" data-aos="fade-up" data-aos-delay="600">
         <div class="row movie-list" id="recommendedMovies">
           <!-- Movies will be loaded here by JavaScript -->
         </div>
@@ -794,17 +796,17 @@
         </div>
       </div>
 
-      <h2 class="section-title mt-4 animate-me" data-delay="500">
+      <h2 class="section-title mt-4" data-aos="fade-up" data-aos-delay="500">
         <i class="fas fa-clock me-2"></i>Phim mới cập nhật
       </h2>
-      <div class="scroll-container animate-me" data-delay="600">
+      <div class="scroll-container" data-aos="fade-up" data-aos-delay="600">
         <div class="row movie-list" id="newMovies">
           <!-- Movies will be loaded here by JavaScript -->
         </div>
       </div>
 
       <!-- Replace your existing carousel with this -->
-      <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div id="movieCarousel" class="carousel slide" data-aos="fade-up" data-aos-delay="700" data-bs-ride="carousel">
           <div class="carousel-indicators">
               <!-- Indicators will be added by JavaScript -->
           </div>
@@ -824,8 +826,9 @@
       <!-- Thêm phan trang -->
       <nav
         aria-label="Page navigation"
-        class="mt-4 animate-me"
-        data-delay="700"
+        class="mt-4"
+        data-aos="fade-up" 
+        data-aos-delay="800"
       >
         <ul class="pagination justify-content-center" id="pagination">
           <li class="page-item">
@@ -853,7 +856,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light mt-5 py-4 animate-me" data-delay="800">
+    <footer class="bg-dark text-light mt-5 py-4" data-aos="fade-up" data-aos-delay="900">
       <div class="container">
         <div class="row">
           <div class="col-md-4 mb-3">
@@ -961,10 +964,24 @@
       });
     </script>
 
+    <!-- AOS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
     <!-- Search Handler -->
     <script src="js/searchHandler.js"></script>
     <!-- Movie API -->
     <script src="js/movieApi.js"></script>
     <script src="js/carousel.js"></script>
+    
+    <!-- Initialize AOS -->
+    <script>
+      // Initialize AOS animations
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+      });
+    </script>
   </body>
 </html>

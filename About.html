@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Về Yuki Cinema - Nền tảng đặt vé phim trực tuyến hàng đầu</title>
+    <title>Về Yuki Movies - Nền tảng xem phim trực tuyến hàng đầu</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -633,11 +633,31 @@
         background-color: #d62839;
       }
       /* Form Container Styles */
+      .animation-section {
+        padding: 6rem 0;
+        background: #030014;
+      }
+
+      .video-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .animation-video {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
       .form-container {
         width: 100%;
         background: linear-gradient(#181828, #181828) padding-box,
           linear-gradient(145deg, transparent 35%, #ff3d4a, #e81cff) border-box;
         border: 2px solid transparent;
+        background-clip: padding-box;
         padding: 32px 24px;
         font-size: 14px;
         font-family: inherit;
@@ -815,7 +835,7 @@
                 line-height: 1;
                 margin-left: 10px;
               "
-              >Yuki<span style="color: #e63946"> Cinema</span></span
+              >Yuki<span style="color: #e63946"> Movies</span></span
             >
           </span>
         </a>
@@ -863,7 +883,7 @@
             <div class="hero-content text-lg-start text-center" data-aos="fade-right" data-aos-duration="1000" style="max-width: 400px; margin: 0 auto;">
               <h1 style="font-size: 2.8rem;">Khám Phá Thế Giới Phim Ảnh Đỉnh Cao</h1>
               <p style="font-size: 1rem;">
-                Yuki Cinema là nền tảng xem phim trực tuyến hàng đầu, mang đến cho bạn kho phim đa dạng từ bom tấn Hollywood, phim Việt đặc sắc đến anime, series truyền hình hấp dẫn. Trải nghiệm xem phim chất lượng cao, không quảng cáo, tốc độ tải nhanh và giao diện thân thiện trên mọi thiết bị.<br><br>
+                Yuki Movies là nền tảng xem phim trực tuyến hàng đầu, mang đến cho bạn kho phim đa dạng từ bom tấn Hollywood, phim Việt đặc sắc đến anime, series truyền hình hấp dẫn. Trải nghiệm xem phim chất lượng cao, không quảng cáo, tốc độ tải nhanh và giao diện thân thiện trên mọi thiết bị.<br><br>
               </p>
               <div class="d-flex flex-row gap-3 justify-content-lg-start justify-content-center mt-4">
                 <button id="btn-xem-them" class="btn btn-primary px-4 py-2" style="font-weight:600; font-size:1rem;">Xem thêm</button>
@@ -892,7 +912,7 @@
     <!-- About Section -->
     <section class="about-section" id="about">
       <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Về Yuki Cinema</h2>
+        <h2 class="section-title" data-aos="fade-up">Về Yuki Movies</h2>
         <div class="row align-items-center">
           <div
             class="col-lg-6 mb-4 mb-lg-0 aos-init aos-animate"
@@ -910,23 +930,54 @@
             ></div>
           </div>
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="400">
-            <h3 class="mb-4">Nền tảng đặt vé phim hiện đại nhất Việt Nam</h3>
+            <h3 class="mb-4">Nền tảng xem phim trực tuyến hiện đại nhất Việt Nam</h3>
             <p>
-              Yuki Cinema ra đời năm 2022 với sứ mệnh mang đến trải nghiệm xem
-              phim thuận tiện và tiết kiệm nhất cho người yêu điện ảnh Việt Nam.
-              Chúng tôi tự hào là đơn vị tiên phong trong việc liên kết với ví
-              điện tử MoMo, mang đến phương thức thanh toán nhanh chóng và an
-              toàn.
+              Yuki Movies ra đời năm 2022 với sứ mệnh mang đến trải nghiệm xem
+              phim trực tuyến chất lượng cao và hoàn toàn miễn phí cho người yêu điện ảnh Việt Nam.
+              Chúng tôi tự hào là đơn vị tiên phong trong việc cung cấp nội dung phim đa dạng
+              với chất lượng hình ảnh và âm thanh vượt trội.
             </p>
             <p>
-              Với hệ thống đặt vé thông minh, giao diện thân thiện và đội ngũ hỗ
-              trợ nhiệt tình, Yuki Cinema đã trở thành lựa chọn hàng đầu của
-              hàng triệu người dùng khi có nhu cầu mua vé xem phim trực tuyến.
+              Với thư viện phim đồ sộ, giao diện thân thiện và đội ngũ biên tập
+              nhiệt tình, Yuki Movies đã trở thành lựa chọn hàng đầu của
+              hàng triệu người dùng khi muốn thưởng thức các bộ phim yêu thích.
             </p>
             <p>
-              Chúng tôi hợp tác với tất cả cụm rạp lớn trên toàn quốc, đảm bảo
-              bạn luôn có nhiều lựa chọn về địa điểm, thời gian và thể loại phim
-              yêu thích.
+              Chúng tôi liên tục cập nhật các bộ phim mới nhất với đầy đủ thể loại,
+              từ phim bộ Hàn Quốc, Trung Quốc đến phim lẻ Hollywood và anime Nhật Bản,
+              đáp ứng mọi nhu cầu giải trí của người xem.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animation Section -->
+    <section class="animation-section" id="animation-section">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Trải nghiệm xem phim</h2>
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-delay="200">
+            <div class="video-container">
+              <video autoplay loop muted playsinline class="animation-video">
+                <source src="Animation/cards-video.webm" type="video/webm">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="400">
+            <h3 class="mb-4">Thư viện phim đa dạng, chất lượng cao</h3>
+            <p>
+              Yuki Movies tự hào sở hữu kho tàng phim đồ sộ với hàng ngàn bộ phim được cập nhật liên tục. 
+              Từ phim bộ châu Á đến phim lẻ Hollywood, từ phim hoạt hình đến phim tài liệu, chúng tôi đều có đầy đủ.
+            </p>
+            <p>
+              Với giao diện thân thiện, dễ sử dụng và tối ưu hóa cho mọi thiết bị, bạn có thể thưởng thức
+              các bộ phim yêu thích mọi lúc, mọi nơi, trên mọi thiết bị có kết nối internet.
+            </p>
+            <p>
+              Chúng tôi đầu tư vào công nghệ streaming tiên tiến, đảm bảo chất lượng hình ảnh và âm thanh
+              tốt nhất, kể cả với kết nối internet không ổn định.
             </p>
           </div>
         </div>
@@ -960,11 +1011,11 @@
                 </div>
                 <h3 class="card-title mb-4">Sứ mệnh</h3>
                 <p class="card-text">
-                  Chúng tôi cam kết mang đến trải nghiệm đặt vé phim thuận tiện
-                  nhất, với giá cả hợp lý và dịch vụ chất lượng cao. Yuki Cinema
+                  Chúng tôi cam kết mang đến trải nghiệm xem phim trực tuyến
+                  chất lượng cao và hoàn toàn miễn phí. Yuki Movies
                   không ngừng đổi mới để phục vụ nhu cầu giải trí ngày càng đa
-                  dạng của khách hàng, đồng thời góp phần thúc đẩy văn hóa xem
-                  phim rạp tại Việt Nam.
+                  dạng của người xem, đồng thời góp phần phát triển văn hóa xem
+                  phim trực tuyến tại Việt Nam.
                 </p>
               </div>
             </div>
@@ -987,10 +1038,10 @@
                 </div>
                 <h3 class="card-title mb-4">Tầm nhìn</h3>
                 <p class="card-text">
-                  Yuki Cinema hướng tới vị trí dẫn đầu trong lĩnh vực đặt vé xem
+                  Yuki Movies hướng tới vị trí dẫn đầu trong lĩnh vực cung cấp nội dung
                   phim trực tuyến tại khu vực Đông Nam Á. Chúng tôi phấn đấu xây
-                  dựng một hệ sinh thái giải trí toàn diện, kết nối người yêu
-                  điện ảnh với những trải nghiệm văn hóa đa dạng và phong phú.
+                  dựng một nền tảng giải trí toàn diện, với thư viện phim đa dạng và
+                  chất lượng cao, mang đến những trải nghiệm xem phim tuyệt vời cho mọi đối tượng.
                 </p>
               </div>
             </div>
@@ -1009,58 +1060,58 @@
               <div class="feature-icon">
                 <i class="fas fa-mobile-alt"></i>
               </div>
-              <h4>Đặt vé mọi lúc mọi nơi</h4>
+              <h4>Xem phim mọi lúc mọi nơi</h4>
               <p>
                 Chỉ với vài thao tác đơn giản trên điện thoại hoặc máy tính, bạn
-                có thể đặt vé xem phim yêu thích một cách nhanh chóng.
+                có thể thưởng thức các bộ phim yêu thích bất cứ khi nào, ở đâu.
               </p>
             </div>
           </div>
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-wallet"></i>
+                <i class="fas fa-film"></i>
               </div>
-              <h4>Thanh toán an toàn qua MoMo</h4>
+              <h4>Chất lượng hình ảnh cao</h4>
               <p>
-                Tích hợp trực tiếp với ví điện tử MoMo giúp việc thanh toán trở
-                nên đơn giản, nhanh chóng và bảo mật tuyệt đối.
+                Trải nghiệm xem phim với chất lượng hình ảnh Full HD, 4K
+                và âm thanh vượt trội trên mọi thiết bị.
               </p>
             </div>
           </div>
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-gift"></i>
+                <i class="fas fa-wifi"></i>
               </div>
-              <h4>Ưu đãi độc quyền</h4>
+              <h4>Không quảng cáo</h4>
               <p>
-                Thường xuyên có các chương trình khuyến mãi, ưu đãi độc quyền
-                dành cho người dùng Yuki Cinema và thanh toán qua MoMo.
+                Trải nghiệm xem phim liên tục không bị gián đoạn bởi quảng cáo,
+                giúp bạn tập trung tối đa vào nội dung phim.
               </p>
             </div>
           </div>
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-couch"></i>
+                <i class="fas fa-download"></i>
               </div>
-              <h4>Chọn ghế thông minh</h4>
+              <h4>Tải xuống để xem offline</h4>
               <p>
-                Giao diện chọn ghế trực quan, giúp bạn dễ dàng lựa chọn vị trí
-                yêu thích với đầy đủ thông tin về loại ghế và giá vé.
+                Tải xuống các bộ phim yêu thích để xem offline khi không có
+                kết nối internet, hoàn toàn miễn phí.
               </p>
             </div>
           </div>
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-ticket-alt"></i>
+                <i class="fas fa-language"></i>
               </div>
-              <h4>Vé điện tử tiện lợi</h4>
+              <h4>Phụ đề đa ngôn ngữ</h4>
               <p>
-                Nhận vé điện tử trực tiếp trên điện thoại, không cần in vé giấy,
-                góp phần bảo vệ môi trường.
+                Hỗ trợ phụ đề đa ngôn ngữ, bao gồm tiếng Việt, Anh, Hàn, Nhật
+                và nhiều ngôn ngữ khác, giúp bạn thưởng thức phim quốc tế dễ dàng.
               </p>
             </div>
           </div>
@@ -1071,7 +1122,7 @@
               </div>
               <h4>Hỗ trợ 24/7</h4>
               <p>
-                Đội ngũ chăm sóc khách hàng luôn sẵn sàng hỗ trợ giải đáp mọi
+                Đội ngũ biên tập và kỹ thuật luôn sẵn sàng hỗ trợ giải đáp mọi
                 thắc mắc của bạn trong suốt quá trình sử dụng dịch vụ.
               </p>
             </div>
@@ -1087,7 +1138,7 @@
           <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
             <div class="stat-item">
               <div class="stat-number">100+</div>
-              <div class="stat-label">Rạp chiếu phim</div>
+              <div class="stat-label">Bộ Phim</div>
             </div>
           </div>
           <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
@@ -1099,7 +1150,7 @@
           <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="600">
             <div class="stat-item">
               <div class="stat-number">10M+</div>
-              <div class="stat-label">Vé đã bán</div>
+              <div class="stat-label">Lượt Xem</div>
             </div>
           </div>
           <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="800">
@@ -1115,7 +1166,7 @@
     <!-- Team Section -->
     <section class="team-section" id="team">
       <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Đội ngũ Yuki Cinema</h2>
+        <h2 class="section-title" data-aos="fade-up">Đội ngũ Yuki Movies</h2>
         <div class="row">
           <div
             class="col-lg-3 col-md-6 mx-auto"
@@ -1164,11 +1215,11 @@
                 -webkit-background-clip: text;
                 color: transparent;
               "
-              >Yuki Cinema</a
+              >Yuki Movies</a
             >
             <p class="footer-text" style="color: #aaaaaa">
-              Yuki Cinema - Nền tảng đặt vé xem phim trực tuyến hàng đầu, mang
-              đến trải nghiệm tiện lợi với hệ thống thanh toán an toàn và giao
+              Yuki Movies - Nền tảng xem phim trực tuyến hàng đầu, mang
+              đến trải nghiệm giải trí chất lượng cao với thư viện phim đa dạng và giao
               diện thân thiện.
             </p>
             <div class="footer-social mt-3">
@@ -1197,7 +1248,7 @@
                 TP. Hồ Chí Minh
               </li>
               <li><i class="fas fa-phone-alt"></i> +84 28 1234 5678</li>
-              <li><i class="fas fa-envelope"></i> info@yukicinema.vn</li>
+              <li><i class="fas fa-envelope"></i> info@yukiMovies.vn</li>
               <li><i class="fas fa-clock"></i> Hỗ trợ 24/7</li>
             </ul>
           </div>
@@ -1236,7 +1287,7 @@
           class="text-center copyright"
           style="color: #aaaaaa; font-size: 1em"
         >
-          © 2025 Yuki Cinema. All rights reserved.
+          © 2025 Yuki Movies. All rights reserved.
         </div>
       </div>
     </footer>

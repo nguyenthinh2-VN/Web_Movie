@@ -24,6 +24,11 @@ function displayMovieDetails(movie) {
                             movie.director.length === 1 && 
                             movie.director[0] === "Đang cập nhật";
     
+    // Khởi tạo AOS nếu chưa được khởi tạo
+    if (typeof AOS !== 'undefined' && AOS) {
+        AOS.refresh();
+    }
+    
     // Thêm class cho container nhưng không sử dụng ảnh nền từ API
     const mainContainer = document.querySelector('.container.mt-4');
     mainContainer.classList.add('movie-details-bg');
