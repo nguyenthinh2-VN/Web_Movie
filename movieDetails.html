@@ -59,26 +59,283 @@
       /* Movie Details Background Optimization */
       .movie-details-bg {
         position: relative;
-        background-size: cover;
-        background-position: center top;
-        background-repeat: no-repeat;
         padding: 30px 15px;
         border-radius: 8px;
         margin-bottom: 20px;
-        transition: background-image 0.5s ease-in-out;
+        background-color: var(--dark-bg-lighter);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
-  
-
-      .movie-details-bg::before {
-        content: "";
+      
+      /* Movie Buttons Styling */
+      .movie-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      
+      .btn-play-movie {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex: 1;
+      }
+      
+      .btn-play-movie:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 61, 0, 0.4);
+      }
+      
+      .btn-follow-movie {
+        width: 44px;
+        height: 44px;
+        border-radius: 0;
+        background: #1e88e5; /* Màu xanh dương */
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+      }
+      
+      .btn-follow-movie i {
+        color: white;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .btn-follow-movie:hover {
+        background: #0d47a1; /* Màu xanh dương đậm hơn khi hover */
+        transform: scale(1.05);
+      }
+      
+      .btn-follow-movie.active {
+        background: #0d47a1; /* Màu xanh dương đậm hơn khi active */
+      }
+      
+      .btn-follow-movie.active i {
+        color: white;
+        animation: bookmark-pulse 0.5s ease;
+      }
+      
+      .btn-follow-movie:after {
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(19, 20, 25, 0.85);
-        z-index: 0;
+        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.5s ease;
+      }
+      
+      .btn-follow-movie:active:after {
+        opacity: 0.3;
+        transform: scale(2);
+        transition: 0s;
+      }
+      
+      @keyframes bookmark-pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+      }
+      
+      /* Styles for Similar Movies Section */
+      .similar-movies-section {
+        margin-bottom: 40px;
+      }
+      
+      .similar-movies-section .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+        color: var(--text-light);
+      }
+      
+      .similar-movies-section .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
+      }
+      
+      .similar-movies-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      
+      .similar-movies-slider {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+        gap: 15px;
+        padding: 10px 0;
+        width: 100%;
+      }
+      
+      .similar-movies-slider::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+      
+      .movie-card {
+        flex: 0 0 auto;
+        width: calc(50% - 8px); /* 2 cards on mobile with gap */
         border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: var(--dark-bg-lighter);
+      }
+      
+      @media (min-width: 768px) {
+        .movie-card {
+          width: calc(20% - 12px); /* 5 cards on desktop with gap */
+        }
+      }
+      
+      .movie-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+      
+      .movie-card-poster {
+        position: relative;
+        width: 100%;
+        padding-top: 150%; /* Aspect ratio 2:3 for posters */
+        overflow: hidden;
+        background-color: #1a1a1a;
+      }
+      
+      .movie-card:hover .movie-card-poster img {
+        transform: scale(1.05);
+      }
+      
+      .movie-card-info {
+        padding: 10px;
+      }
+      
+      .movie-card-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--text-light);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .movie-card-subtitle {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .movie-card-subtitle span:first-child {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70%;
+      }
+      
+      .movie-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      
+      .slider-arrow {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+        position: absolute;
+        z-index: 10;
+      }
+      
+      .prev-arrow {
+        left: 0;
+      }
+      
+      .next-arrow {
+        right: 0;
+      }
+      
+      .slider-arrow:hover {
+        background: var(--primary-color);
+      }
+      
+      .slider-arrow:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      
+      /* Progressive loading for images */
+      .movie-card-poster {
+        background-color: #1a1a1a;
+        position: relative;
+        display: block;
+        height: 0;
+      }
+      
+      .movie-card-poster .placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #2a2a2a;
+        z-index: 1;
+        transition: opacity 0.5s ease;
+      }
+      
+      .movie-card-poster img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        z-index: 2;
+        object-fit: cover;
+      }
+      
+      .movie-card-poster img.loaded {
+        opacity: 1;
       }
 
       .movie-details-bg .row {
@@ -740,6 +997,24 @@
       <div class="mt-4" id="episodeList">
         <!-- Episodes will be loaded here for TV series -->
       </div>
+      
+      <!-- Phần Phim tương tự (More Like This) -->
+      <div class="similar-movies-section mt-5" id="similarMovies">
+        <h3 class="section-title">Phim tương tự</h3>
+        <div class="similar-movies-container">
+          <button class="slider-arrow prev-arrow d-none d-md-flex">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          
+          <div class="similar-movies-slider">
+            <!-- Similar movies will be loaded here -->
+          </div>
+          
+          <button class="slider-arrow next-arrow d-none d-md-flex">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
@@ -798,5 +1073,7 @@
     <script src="js/searchHandler.js"></script>
     <!-- Movie API -->
     <script src="js/movieDetailsApi.js"></script>
+    <!-- Similar Movies -->
+    <script src="js/similarMovies.js"></script>
   </body>
 </html>

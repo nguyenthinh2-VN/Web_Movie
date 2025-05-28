@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Về Yuki Cinema - Nền tảng đặt vé phim trực tuyến hàng đầu</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #e63946;
+        --secondary-color: #141414; /* Tối hơn */
+        --accent-color: #457b9d;
+        --light-color: #f1faee;
+        --dark-color: #0d1b2a;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--light-color);
+        background-color: #181828;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar {
+        background-color: rgba(29, 53, 87, 0.95);
+        transition: all 0.3s ease;
+        padding: 1rem 2rem;
+      }
+
+      .navbar.scrolled {
+        padding: 0.5rem 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--light-color) !important;
+        font-size: 1.8rem;
+      }
+
+      .navbar-brand span {
+        color: var(--primary-color);
+      }
+
+      .nav-link {
+        color: var(--light-color) !important;
+        margin: 0 0.5rem;
+        position: relative;
+        font-weight: 500;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .hero-section {
+        position: relative;
+        height: 100vh;
+        min-height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        background: #030014;
+        text-align: center;
+      }
+
+      .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-content p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 2rem;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary:hover {
+        background-color: #c90813;
+        border-color: #c90813;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+      }
+
+      .btn-booking {
+        position: relative;
+      }
+
+      .btn-booking .loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.2);
+        transition: width 1s ease;
+      }
+
+      .btn-booking:active .loading {
+        width: 100%;
+      }
+
+      .section-title {
+        position: relative;
+        margin-bottom: 3rem;
+        padding-bottom: 1rem;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: var(--primary-color);
+      }
+
+      .about-section {
+        padding: 6rem 0;
+        background: #fff;
+        color: #181828;
+      }
+
+      .mission-vision {
+        padding: 6rem 0;
+        background: linear-gradient(120deg, #181828 60%, #23233a 100%);
+      }
+
+      .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        height: 100%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+      }
+
+      .features-section {
+        padding: 6rem 0;
+        background: #181828;
+      }
+
+      .feature-item {
+        margin-bottom: 3rem;
+        text-align: center;
+        padding: 2rem;
+        border-radius: 15px;
+        background-color: #23233a;
+        color: #fff;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .feature-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .feature-item:hover .feature-icon {
+        color: var(--primary-color);
+        transform: scale(1.2);
+      }
+
+      .team-section {
+        padding: 6rem 0;
+        background: #23233a;
+      }
+
+      .team-member {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .member-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 1.5rem;
+        border: 5px solid #e63946;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .team-member:hover .member-img {
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+      }
+
+      .social-icons {
+        margin-top: 1rem;
+      }
+
+      .social-icons a {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 50%;
+        background-color: var(--accent-color);
+        color: white;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-5px);
+      }
+
+      .testimonial-section {
+        padding: 6rem 0;
+        background: #181828;
+      }
+
+      .testimonial-item {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 15px;
+        background-color: #23233a;
+        color: #fff;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      .testimonial-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        border: 3px solid var(--light-color);
+      }
+
+      .quote-icon {
+        font-size: 2rem;
+        color: var(--accent-color);
+        opacity: 0.3;
+        margin-bottom: 1rem;
+      }
+
+      .testimonial-text {
+        font-style: italic;
+        margin-bottom: 1rem;
+      }
+
+      .stats-section {
+        padding: 4rem 0;
+        background: linear-gradient(to right, #23233a, #181828);
+        color: white;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 2rem 0;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--light-color);
+      }
+
+      .stat-label {
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .faq-section {
+        padding: 6rem 0;
+        background: #23233a;
+      }
+
+      .accordion-item {
+        margin-bottom: 1rem;
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .accordion-button {
+        background-color: #181828;
+        color: #fff;
+        font-weight: 600;
+        padding: 1.5rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background-color: #181828;
+      }
+
+      .accordion-body {
+        padding: 1.5rem;
+        background-color: #181828;
+        color: #fff;
+      }
+
+      .contact-section {
+        padding: 6rem 0;
+        background: #181828;
+      }
+
+      .contact-info {
+        margin-bottom: 3rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .contact-icon {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: var(--accent-color);
+        color: white;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+      }
+
+      .form-control {
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-control:focus {
+        box-shadow: none;
+        border-color: var(--accent-color);
+      }
+
+      footer {
+        background-color: #0d1b2a;
+        color: var(--light-color);
+        padding: 4rem 0 2rem;
+      }
+
+      .footer-logo {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-logo span {
+        color: var(--primary-color);
+      }
+
+      .footer-links h5 {
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.8rem;
+      }
+
+      .footer-links a {
+        color: #a0a0a0;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary-color);
+        padding-left: 5px;
+      }
+
+      .footer-bottom {
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+
+      .scroll-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .scroll-to-top.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-to-top:hover {
+        background-color: #d62839;
+      }
+
+      @media (max-width: 991px) {
+        .hero-content h1 {
+          font-size: 2.8rem;
+        }
+
+        .navbar-collapse {
+          background-color: var(--secondary-color);
+          padding: 1rem;
+          border-radius: 10px;
+          margin-top: 1rem;
+        }
+
+        .navbar-nav .nav-link {
+          padding: 0.8rem 0;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .hero-content h1 {
+          font-size: 2.2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .hero-content p {
+          font-size: 1rem;
+        }
+      }
+
+      .card.h-100.p-4:hover {
+        box-shadow: 0 8px 32px 0 rgba(26, 251, 240, 0.25),
+          0 1.5px 8px 0 rgba(218, 0, 255, 0.15);
+        transition: box-shadow 0.3s;
+        transition: all 0.3s ease;
+      }
+      .feature-item:hover {
+        box-shadow: 0 8px 32px 0 rgba(26, 251, 240, 0.25),
+          0 1.5px 8px 0 rgba(218, 0, 255, 0.15);
+        transition: box-shadow 0.3s;
+        transition: all 0.3s ease;
+      }
+      .footer-custom {
+        background: #181828;
+        color: #fff;
+        margin-top: 0;
+      }
+      .footer-custom .footer-title {
+        color: #ff9e43;
+        font-weight: 600;
+        margin-bottom: 1.2rem;
+        letter-spacing: 1px;
+      }
+      .footer-custom .footer-brand {
+        background: linear-gradient(90deg, #ff3d4a, #ff9e43);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 700;
+        font-size: 2rem;
+        letter-spacing: 1px;
+        text-decoration: none;
+      }
+      .footer-custom .footer-social-link {
+        display: inline-block;
+        width: 38px;
+        height: 38px;
+        line-height: 38px;
+        text-align: center;
+        border-radius: 50%;
+        background: #23233a;
+        color: #fff;
+        margin-right: 8px;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+      }
+      .footer-custom .footer-social-link:hover {
+        background: linear-gradient(90deg, #ff3d4a, #ff9e43);
+        color: #fff;
+        transform: translateY(-3px) scale(1.08);
+      }
+      .footer-custom .footer-links {
+        list-style: none;
+        padding-left: 0;
+      }
+      .footer-custom .footer-links li {
+        margin-bottom: 0.7rem;
+      }
+      .footer-custom .footer-links a {
+        color: #aaaaaa;
+        text-decoration: none;
+        transition: color 0.2s, padding-left 0.2s;
+        font-size: 1.05em;
+      }
+      .footer-custom .footer-links a:hover {
+        color: #ff3d4a;
+        padding-left: 6px;
+      }
+      .footer-custom .footer-contact {
+        list-style: none;
+        padding-left: 0;
+        color: #aaaaaa;
+        font-size: 1.05em;
+      }
+      .footer-custom .footer-contact li {
+        margin-bottom: 0.7rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .footer-custom .footer-contact i {
+        color: #ff9e43;
+        min-width: 20px;
+        text-align: center;
+        font-size: 1.1em;
+      }
+      .footer-custom .footer-divider {
+        border-top: 1.5px solid rgba(255, 255, 255, 0.08);
+        margin: 2.5rem 0 1.2rem 0;
+      }
+      @media (max-width: 991px) {
+        .footer-custom .footer-brand {
+          font-size: 1.5rem;
+        }
+      }
+      @media (max-width: 767px) {
+        .footer-custom .container {
+          padding: 2rem 1rem;
+        }
+        .footer-custom .footer-title {
+          font-size: 1.1rem;
+        }
+      }
+      .scroll-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .scroll-to-top.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-to-top:hover {
+        background-color: #d62839;
+      }
+      /* Form Container Styles */
+      .form-container {
+        width: 100%;
+        background: linear-gradient(#181828, #181828) padding-box,
+          linear-gradient(145deg, transparent 35%, #ff3d4a, #e81cff) border-box;
+        border: 2px solid transparent;
+        padding: 32px 24px;
+        font-size: 14px;
+        font-family: inherit;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-sizing: border-box;
+        border-radius: 16px;
+        background-size: 200% 100%;
+        animation: gradient 5s ease infinite;
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .form-container button:active {
+        scale: 0.95;
+      }
+
+      .form-container .form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .form-container .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .form-container .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #717171;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .form-container .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        color: #fff;
+        font-family: inherit;
+        background-color: transparent;
+        border: 1px solid #414141;
+      }
+
+      .form-container .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        resize: none;
+        color: #fff;
+        height: 96px;
+        border: 1px solid #414141;
+        background-color: transparent;
+        font-family: inherit;
+      }
+
+      .form-container .form-group input::placeholder {
+        opacity: 0.5;
+      }
+
+      .form-container .form-group input:focus {
+        outline: none;
+        border-color: #ff3d4a;
+      }
+
+      .form-container .form-group textarea:focus {
+        outline: none;
+        border-color: #ff3d4a;
+      }
+
+      .form-container .form-submit-btn {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        align-self: flex-start;
+        font-family: inherit;
+        color: #717171;
+        font-weight: 600;
+        width: 40%;
+        background: #313131;
+        border: 1px solid #414141;
+        padding: 12px 16px;
+        font-size: inherit;
+        gap: 8px;
+        margin-top: 8px;
+        cursor: pointer;
+        border-radius: 6px;
+      }
+
+      .form-container .form-submit-btn:hover {
+        background-color: #fff;
+        border-color: #fff;
+      }
+      /* Notification Styles */
+      .notification {
+        position: fixed;
+        bottom: 20px; /* Changed from 20px to 100px to appear below header */
+        right: 20px;
+        background: linear-gradient(to right, #00b09b, #96c93d);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 9999; /* Increased z-index to ensure it's above all elements */
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+      }
+
+      .notification.show {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .notification i {
+        font-size: 20px;
+      }
+
+      .notification .progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 0 0 10px 10px;
+      }
+
+      .notification .progress-bar {
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: inherit;
+        transition: width 3s linear;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <!-- Header & Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a
+          class="navbar-brand"
+          href="#"
+          style="padding-top: 0; padding-bottom: 0"
+        >
+          <span class="d-flex align-items-center">
+            <span
+              id="lottie-logo"
+              style="width: 40px; height: 40px; display: inline-block"
+            ></span>
+            <span
+              style="
+                font-weight: 700;
+                font-size: 1.8rem;
+                line-height: 1;
+                margin-left: 10px;
+              "
+              >Yuki<span style="color: #e63946"> Cinema</span></span
+            >
+          </span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#home">Trang chủ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#about">Về chúng tôi</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn-booking" href="#mission-vision"
+                >Mục Tiêu<span class="loading"></span
+              ></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#team">Đội ngũ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Liên hệ</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+      <div class="container h-100">
+        <div class="row align-items-center h-100" style="min-height: 600px;">
+          <!-- Left Column: Text -->
+          <div class="col-lg-4 col-12" style="z-index:2; display: flex; align-items: center;">
+            <div class="hero-content text-lg-start text-center" data-aos="fade-right" data-aos-duration="1000" style="max-width: 400px; margin: 0 auto;">
+              <h1 style="font-size: 2.8rem;">Khám Phá Thế Giới Phim Ảnh Đỉnh Cao</h1>
+              <p style="font-size: 1rem;">
+                Yuki Cinema là nền tảng xem phim trực tuyến hàng đầu, mang đến cho bạn kho phim đa dạng từ bom tấn Hollywood, phim Việt đặc sắc đến anime, series truyền hình hấp dẫn. Trải nghiệm xem phim chất lượng cao, không quảng cáo, tốc độ tải nhanh và giao diện thân thiện trên mọi thiết bị.<br><br>
+              </p>
+              <div class="d-flex flex-row gap-3 justify-content-lg-start justify-content-center mt-4">
+                <button id="btn-xem-them" class="btn btn-primary px-4 py-2" style="font-weight:600; font-size:1rem;">Xem thêm</button>
+                <button id="btn-play" class="btn btn-outline-light px-4 py-2" style="font-weight:600; font-size:1rem; display:flex; align-items:center; gap:8px;">
+                  <i class="fas fa-play"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Right Column: WebM Video -->
+          <div class="col-lg-8 col-12 d-flex justify-content-center align-items-center blackhole" data-aos="fade-left" data-aos-duration="1000">
+            <div class="position-relative" style="width: 100%; max-width: 600px;">
+              <!-- Placeholder (blurred small image) -->
+              <div class="placeholder" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.2); border-radius: 20px; filter: blur(10px); transition: opacity 0.5s ease;"></div>
+              <!-- Main video with lazy loading -->
+              <video autoplay loop muted playsinline loading="lazy" style="width: 100%; height: 550px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); background: transparent; object-fit: cover; transition: opacity 0.5s ease;" onloadeddata="this.previousElementSibling.style.opacity = 0;">
+                <source src="Animation/blackhole.webm" type="video/webm">
+                Trình duyệt của bạn không hỗ trợ video.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Về Yuki Cinema</h2>
+        <div class="row align-items-center">
+          <div
+            class="col-lg-6 mb-4 mb-lg-0 aos-init aos-animate"
+            data-aos="fade-right"
+            data-aos-delay="200"
+          >
+            <div
+              id="lottie-animation"
+              style="
+                width: 100%;
+                max-width: 400px;
+                height: 260px;
+                margin: 0 auto;
+              "
+            ></div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="400">
+            <h3 class="mb-4">Nền tảng đặt vé phim hiện đại nhất Việt Nam</h3>
+            <p>
+              Yuki Cinema ra đời năm 2022 với sứ mệnh mang đến trải nghiệm xem
+              phim thuận tiện và tiết kiệm nhất cho người yêu điện ảnh Việt Nam.
+              Chúng tôi tự hào là đơn vị tiên phong trong việc liên kết với ví
+              điện tử MoMo, mang đến phương thức thanh toán nhanh chóng và an
+              toàn.
+            </p>
+            <p>
+              Với hệ thống đặt vé thông minh, giao diện thân thiện và đội ngũ hỗ
+              trợ nhiệt tình, Yuki Cinema đã trở thành lựa chọn hàng đầu của
+              hàng triệu người dùng khi có nhu cầu mua vé xem phim trực tuyến.
+            </p>
+            <p>
+              Chúng tôi hợp tác với tất cả cụm rạp lớn trên toàn quốc, đảm bảo
+              bạn luôn có nhiều lựa chọn về địa điểm, thời gian và thể loại phim
+              yêu thích.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="mission-vision" id="mission-vision">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Sứ mệnh & Tầm nhìn</h2>
+        <div class="row">
+          <div
+            class="col-md-6 mb-4 mb-md-0"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="card h-100 p-4">
+              <div class="card-body text-center">
+                <div
+                  class="card-icon"
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <div
+                    id="lottie-target"
+                    style="width: 90px; height: 90px"
+                  ></div>
+                </div>
+                <h3 class="card-title mb-4">Sứ mệnh</h3>
+                <p class="card-text">
+                  Chúng tôi cam kết mang đến trải nghiệm đặt vé phim thuận tiện
+                  nhất, với giá cả hợp lý và dịch vụ chất lượng cao. Yuki Cinema
+                  không ngừng đổi mới để phục vụ nhu cầu giải trí ngày càng đa
+                  dạng của khách hàng, đồng thời góp phần thúc đẩy văn hóa xem
+                  phim rạp tại Việt Nam.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="card h-100 p-4">
+              <div class="card-body text-center">
+                <div
+                  class="card-icon"
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <div
+                    id="lottie-vision"
+                    style="width: 90px; height: 90px"
+                  ></div>
+                </div>
+                <h3 class="card-title mb-4">Tầm nhìn</h3>
+                <p class="card-text">
+                  Yuki Cinema hướng tới vị trí dẫn đầu trong lĩnh vực đặt vé xem
+                  phim trực tuyến tại khu vực Đông Nam Á. Chúng tôi phấn đấu xây
+                  dựng một hệ sinh thái giải trí toàn diện, kết nối người yêu
+                  điện ảnh với những trải nghiệm văn hóa đa dạng và phong phú.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Tiện ích nổi bật</h2>
+        <div class="row">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <h4>Đặt vé mọi lúc mọi nơi</h4>
+              <p>
+                Chỉ với vài thao tác đơn giản trên điện thoại hoặc máy tính, bạn
+                có thể đặt vé xem phim yêu thích một cách nhanh chóng.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-wallet"></i>
+              </div>
+              <h4>Thanh toán an toàn qua MoMo</h4>
+              <p>
+                Tích hợp trực tiếp với ví điện tử MoMo giúp việc thanh toán trở
+                nên đơn giản, nhanh chóng và bảo mật tuyệt đối.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-gift"></i>
+              </div>
+              <h4>Ưu đãi độc quyền</h4>
+              <p>
+                Thường xuyên có các chương trình khuyến mãi, ưu đãi độc quyền
+                dành cho người dùng Yuki Cinema và thanh toán qua MoMo.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-couch"></i>
+              </div>
+              <h4>Chọn ghế thông minh</h4>
+              <p>
+                Giao diện chọn ghế trực quan, giúp bạn dễ dàng lựa chọn vị trí
+                yêu thích với đầy đủ thông tin về loại ghế và giá vé.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-ticket-alt"></i>
+              </div>
+              <h4>Vé điện tử tiện lợi</h4>
+              <p>
+                Nhận vé điện tử trực tiếp trên điện thoại, không cần in vé giấy,
+                góp phần bảo vệ môi trường.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <h4>Hỗ trợ 24/7</h4>
+              <p>
+                Đội ngũ chăm sóc khách hàng luôn sẵn sàng hỗ trợ giải đáp mọi
+                thắc mắc của bạn trong suốt quá trình sử dụng dịch vụ.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-item">
+              <div class="stat-number">100+</div>
+              <div class="stat-label">Rạp chiếu phim</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="stat-item">
+              <div class="stat-number">5M+</div>
+              <div class="stat-label">Người dùng</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="stat-item">
+              <div class="stat-number">10M+</div>
+              <div class="stat-label">Vé đã bán</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="800">
+            <div class="stat-item">
+              <div class="stat-number">4.8</div>
+              <div class="stat-label">Đánh giá trung bình</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section" id="team">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Đội ngũ Yuki Cinema</h2>
+        <div class="row">
+          <div
+            class="col-lg-3 col-md-6 mx-auto"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="team-member">
+              <img
+                src="./css/img/Character_20.png"
+                alt="Nguyễn Đức Thịnh"
+                class="member-img"
+                style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; margin-bottom: 1.5rem; border: 5px solid #e63946; box-shadow: 0 10px 20px rgba(0,0,0,0.1);"
+              />
+              <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Nguyễn Đức Thịnh</h4>
+              <p style="color: #aaa; margin-bottom: 1rem;">CEO - Frontend-Dev</p>
+              <div class="social-icons" style="margin-top: 1rem;">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+      <i class="fas fa-check-circle"></i>
+      <span>Gửi thành công!</span>
+      <div class="progress">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer id="contact" class="footer-custom">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <a
+              href="#"
+              class="footer-brand mb-3 d-block"
+              style="
+                font-size: 2rem;
+                font-weight: 700;
+                background: linear-gradient(90deg, #ff3d4a, #ff9e43);
+                -webkit-background-clip: text;
+                color: transparent;
+              "
+              >Yuki Cinema</a
+            >
+            <p class="footer-text" style="color: #aaaaaa">
+              Yuki Cinema - Nền tảng đặt vé xem phim trực tuyến hàng đầu, mang
+              đến trải nghiệm tiện lợi với hệ thống thanh toán an toàn và giao
+              diện thân thiện.
+            </p>
+            <div class="footer-social mt-3">
+              <a href="#" class="footer-social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="footer-social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="footer-social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="footer-social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a href="#" class="footer-social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <h5 class="footer-title">Thông tin liên hệ</h5>
+            <ul class="footer-contact">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> 123 Nguyễn Huệ, Quận 1,
+                TP. Hồ Chí Minh
+              </li>
+              <li><i class="fas fa-phone-alt"></i> +84 28 1234 5678</li>
+              <li><i class="fas fa-envelope"></i> info@yukicinema.vn</li>
+              <li><i class="fas fa-clock"></i> Hỗ trợ 24/7</li>
+            </ul>
+          </div>
+          <!-- Add Form Column -->
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <div class="form-container">
+              <form class="form">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input
+                    required=""
+                    name="email"
+                    id="email"
+                    type="text"
+                    placeholder="Nhập email của bạn"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="textarea">Bạn cần hỗ trợ?</label>
+                  <textarea
+                    required=""
+                    cols="50"
+                    rows="10"
+                    id="textarea"
+                    name="textarea"
+                    placeholder="Nhập nội dung"
+                  ></textarea>
+                </div>
+                <button type="submit" class="form-submit-btn">Gửi</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <hr class="footer-divider" />
+        <div
+          class="text-center copyright"
+          style="color: #aaaaaa; font-size: 1em"
+        >
+          © 2025 Yuki Cinema. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+    <script>
+      AOS.init();
+      lottie.loadAnimation({
+        container: document.getElementById("lottie-animation"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "Animation/Animation - 1746937823471.json",
+      });
+      // Logo animation
+      lottie.loadAnimation({
+        container: document.getElementById("lottie-logo"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "Animation/Animation - LogoAnimation.json",
+      });
+    </script>
+    <script>
+      lottie.loadAnimation({
+        container: document.getElementById("lottie-vision"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "Animation/Animation - 1746938450758.json",
+      });
+    </script>
+    <script>
+      lottie.loadAnimation({
+        container: document.getElementById("lottie-target"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "Animation/Animation - target.json",
+      });
+    </script>
+    <script>
+      lottie.loadAnimation({
+        container: document.getElementById("lottie-ticket"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "Animation/Animation - ticket.json",
+      });
+    </script>
+    <a href="#" class="scroll-to-top" id="scrollToTop">
+      <i class="fas fa-arrow-up"></i>
+    </a>
+    <script>
+      // Back to Top Button
+      const scrollToTopBtn = document.getElementById("scrollToTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.pageYOffset > 300) {
+          scrollToTopBtn.classList.add("show");
+        } else {
+          scrollToTopBtn.classList.remove("show");
+        }
+      });
+
+      scrollToTopBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+    </script>
+    <script>
+      // Form submission handler
+      document
+        .querySelector(".form-container form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get the notification elements
+          const notification = document.getElementById("notification");
+          const progressBar = notification.querySelector(".progress-bar");
+
+          // Show notification
+          notification.classList.add("show");
+
+          // Start progress bar animation
+          setTimeout(() => {
+            progressBar.style.width = "0%";
+          }, 100);
+
+          // Hide notification after 3 seconds
+          setTimeout(() => {
+            notification.classList.remove("show");
+            // Reset progress bar
+            setTimeout(() => {
+              progressBar.style.width = "100%";
+            }, 300);
+          }, 3000);
+
+          // Reset form
+          this.reset();
+        });
+    </script>
+    <script>
+      // Button actions for hero-section
+      document.getElementById('btn-xem-them').onclick = function() {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+      document.getElementById('btn-play').onclick = function() {
+        window.location.href = 'index.html';
+      };
+    </script>
+  </body>
+</html>

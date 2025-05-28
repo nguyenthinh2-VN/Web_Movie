@@ -24,15 +24,12 @@ function displayMovieDetails(movie) {
                             movie.director.length === 1 && 
                             movie.director[0] === "Đang cập nhật";
     
-    // Set background image from thumb_url if available
-    if (movie.thumb_url) {
-        // Tạo một container mới cho ảnh nền
-        const mainContainer = document.querySelector('.container.mt-4');
-        mainContainer.classList.add('movie-details-bg');
-        
-        // Áp dụng ảnh nền trực tiếp không qua các bước tối ưu
-        mainContainer.style.backgroundImage = `url('${movie.thumb_url}')`;
-    }
+    // Thêm class cho container nhưng không sử dụng ảnh nền từ API
+    const mainContainer = document.querySelector('.container.mt-4');
+    mainContainer.classList.add('movie-details-bg');
+    
+    // Sử dụng màu nền tối thay vì ảnh nền
+    mainContainer.style.backgroundColor = 'var(--dark-bg-lighter)';
     
     // Tính toán số sao dựa trên vote_average
     const totalStars = 5;
@@ -75,14 +72,14 @@ function displayMovieDetails(movie) {
                 <div class="movie-buttons">
                     <button class="btn-play-movie" id="watchFirstEpisode">Xem phim</button>
                     <button class="btn-follow-movie ${isBookmarked ? 'active' : ''}" id="followMovie">
-                        ${isBookmarked ? 'Hủy theo dõi' : 'Theo dõi'}
+                        <i class="fa-solid fa-bookmark"></i>
                     </button>
                 </div>
             </div>
             <div class="col-md-8">
                 <h1 class="sub-main">${movie.name}</h1>
                 <h3 class="name-sub">${movie.origin_name}</h3>
-                <div class="mt-3 body-test-details">
+                <div class="mt-3 body-test-details" style="background-color: var(--dark-bg); padding: 15px; border-radius: 8px;">
                     <p><strong>Trạng thái:</strong> <span class="status-badge">${movie.episode_current}</span></p>
                     <p><strong>Năm phát hành:</strong> ${movie.year}</p>
                     <p><strong>Thời lượng:</strong> ${movie.time}</p>
@@ -94,7 +91,7 @@ function displayMovieDetails(movie) {
                 </div>
                 <div class="mt-4">
                     <h4>Nội dung phim</h4>
-                    <p class="movie-content">${movie.content}</p>
+                    <p class="movie-content" style="background-color: var(--dark-bg); padding: 15px; border-radius: 8px;">${movie.content}</p>
                 </div>
             </div>
         </div>
@@ -150,13 +147,13 @@ function toggleFollowMovie(movie) {
         if (existingIndex !== -1) {
             // Nếu phim đã tồn tại, xóa khỏi danh sách
             bookmarks.splice(existingIndex, 1);
-            followButton.textContent = 'Theo dõi';
+            followButton.innerHTML = '<i class="fa-solid fa-bookmark"></i>';
             followButton.classList.remove('active');
             showNotification('Đã xóa phim khỏi danh sách yêu thích');
         } else {
             // Nếu phim chưa tồn tại, thêm vào danh sách
             bookmarks.push(movieData);
-            followButton.textContent = 'Hủy theo dõi';
+            followButton.innerHTML = '<i class="fa-solid fa-bookmark"></i>';
             followButton.classList.add('active');
             showNotification('Đã thêm phim vào danh sách yêu thích');
         }
