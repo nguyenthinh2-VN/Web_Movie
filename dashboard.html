@@ -6,7 +6,11 @@
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -61,6 +65,55 @@
             color: #343a40;
             font-size: 1.8rem;
             margin-bottom: 0;
+        }
+        .dashboard-tab {
+            display: none;
+        }
+        .dashboard-tab.active {
+            display: block;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .movie-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .movie-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .movie-card-body {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie-card-footer {
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
         }
         .chart-container {
             background-color: white;
@@ -121,14 +174,14 @@
             <!-- Sidebar -->
             <div class="col-md-2 sidebar">
                 <h3 class="text-white px-3 mb-4">Admin Panel</h3>
-                <a href="#" class="active" onclick="showStats()">
-                    <i class="fas fa-chart-line"></i>Thống kê
+                <a href="#" class="nav-link active" data-tab="revenue-tab">
+                    <i class="fas fa-chart-line"></i>Thống kê doanh thu
                 </a>
-                <a href="/movie-management.html">
+                <a href="#" class="nav-link" data-tab="account-tab">
+                    <i class="fas fa-users"></i>Quản lý tài khoản
+                </a>
+                <a href="#" class="nav-link" data-tab="movie-tab">
                     <i class="fas fa-film"></i>Quản lý phim
-                </a>
-                <a href="/user-management.html">
-                    <i class="fas fa-users"></i>Quản lý người dùng
                 </a>
                 <a href="#" onclick="handleLogout()">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất
@@ -137,53 +190,1106 @@
 
             <!-- Main Content -->
             <div class="col-md-10 main-content">
-                <h2 class="mb-4">Thống kê doanh thu</h2>
-                
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <h4>Tổng số người dùng</h4>
-                            <h2 id="userCount">0</h2>
+                <!-- Revenue Management Tab -->
+                <div id="revenue-tab" class="dashboard-tab active">
+                    <h2 class="mb-4">Thống kê doanh thu</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <h4>Tổng số người dùng</h4>
+                                <h2 id="userCount">0</h2>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <h4>Số vé đã bán</h4>
-                            <h2 id="bookingCount">0</h2>
-                            <div class="ticket-trend" id="ticketTrend">
-                                <span class="percentage"></span>
-                                <i class="fas"></i>
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <h4>Số vé đã bán</h4>
+                                <h2 id="bookingCount">0</h2>
+                                <div class="ticket-trend" id="ticketTrend">
+                                    <span class="percentage"></span>
+                                    <i class="fas"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <h4>Tổng doanh thu</h4>
+                                <h2 id="totalRevenue">0 đ</h2>
+                                <div class="revenue-trend" id="revenueTrend">
+                                    <span class="percentage"></span>
+                                    <i class="fas"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <h4>Số lượng phim</h4>
+                                <h2 id="movieCount">0</h2>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <h4>Tổng doanh thu</h4>
-                            <h2 id="totalRevenue">0 đ</h2>
-                            <div class="revenue-trend" id="revenueTrend">
-                                <span class="percentage"></span>
-                                <i class="fas"></i>
-                            </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <h3 class="chart-title">Biểu đồ doanh thu theo tháng</h3>
+                        <div style="height: 400px; position: relative;">
+                            <canvas id="revenueChart"></canvas>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <h4>Số lượng phim</h4>
-                            <h2 id="movieCount">0</h2>
+                    
+                    <!-- Revenue Details Table -->
+                    <div class="table-container mt-4">
+                        <h3 class="chart-title">Chi tiết doanh thu</h3>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <select class="form-select" id="revenueFilterType">
+                                    <option value="all">Tất cả</option>
+                                    <option value="movie">Theo phim</option>
+                                    <option value="date">Theo ngày</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" class="form-control" id="revenueStartDate">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" class="form-control" id="revenueEndDate">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" id="revenueFilterBtn">Lọc dữ liệu</button>
+                            </div>
                         </div>
+                        <table class="table table-striped" id="revenueTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ngày</th>
+                                    <th>Tên phim</th>
+                                    <th>Số vé</th>
+                                    <th>Doanh thu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Revenue data will be populated here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-                <!-- Chart Container -->
-                <div class="chart-container">
-                    <h3 class="chart-title">Biểu đồ doanh thu theo tháng</h3>
-                    <canvas id="revenueChart"></canvas>
+                
+                <!-- Account Management Tab -->
+                <div id="account-tab" class="dashboard-tab">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Quản lý tài khoản</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                            <i class="fas fa-plus me-2"></i>Thêm tài khoản
+                        </button>
+                    </div>
+                    
+                    <!-- Account Filter -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="accountSearch" placeholder="Tìm kiếm tài khoản...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="accountTypeFilter">
+                                <option value="all">Tất cả loại tài khoản</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">Người dùng</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="accountStatusFilter">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="active">Hoạt động</option>
+                                <option value="inactive">Đã khóa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" id="accountFilterBtn">Lọc</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Table -->
+                    <div class="table-container">
+                        <table class="table table-striped" id="accountTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Loại tài khoản</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Account data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Movie Management Tab -->
+                <div id="movie-tab" class="dashboard-tab">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Quản lý phim</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+                            <i class="fas fa-plus me-2"></i>Thêm phim mới
+                        </button>
+                    </div>
+                    
+                    <!-- Movie Filter -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="movieSearch" placeholder="Tìm kiếm phim...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="movieGenreFilter">
+                                <option value="all">Tất cả thể loại</option>
+                                <option value="action">Hành động</option>
+                                <option value="comedy">Hài</option>
+                                <option value="drama">Chính kịch</option>
+                                <option value="horror">Kinh dị</option>
+                                <option value="romance">Lãng mạn</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="movieStatusFilter">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="showing">Đang chiếu</option>
+                                <option value="coming">Sắp chiếu</option>
+                                <option value="ended">Đã kết thúc</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" id="movieFilterBtn">Lọc</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Movie Grid View -->
+                    <div class="row" id="movieGrid">
+                        <!-- Movie cards will be populated here -->
+                    </div>
+                    
+                    <!-- Movie List View (Alternative) -->
+                    <div class="table-container mt-4">
+                        <ul class="nav nav-tabs" id="movieViewTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="grid-tab" data-bs-toggle="tab" href="#grid-view">Xem dạng lưới</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="list-tab" data-bs-toggle="tab" href="#list-view">Xem dạng bảng</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3">
+                            <div class="tab-pane fade show active" id="grid-view">
+                                <!-- Grid view is shown by default -->
+                            </div>
+                            <div class="tab-pane fade" id="list-view">
+                                <table class="table table-striped" id="movieTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Ảnh</th>
+                                            <th>Tên phim</th>
+                                            <th>Thể loại</th>
+                                            <th>Thời lượng</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Movie data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Account Management Modals -->
+    <!-- Add Account Modal -->
+    <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAccountModalLabel">Thêm tài khoản mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAccountForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="accountName" class="form-label">Họ tên</label>
+                                <input type="text" class="form-control" id="accountName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="accountEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="accountEmail" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="accountPhone" class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="accountPhone">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="accountType" class="form-label">Loại tài khoản</label>
+                                <select class="form-select" id="accountType" required>
+                                    <option value="user">Người dùng</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="accountPassword" class="form-label">Mật khẩu</label>
+                                <input type="password" class="form-control" id="accountPassword" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="accountConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                                <input type="password" class="form-control" id="accountConfirmPassword" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveAccountBtn">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Account Modal -->
+    <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAccountModalLabel">Chỉnh sửa tài khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAccountForm">
+                        <input type="hidden" id="editAccountId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editAccountName" class="form-label">Họ tên</label>
+                                <input type="text" class="form-control" id="editAccountName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editAccountEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editAccountEmail" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editAccountPhone" class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="editAccountPhone">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editAccountType" class="form-label">Loại tài khoản</label>
+                                <select class="form-select" id="editAccountType" required>
+                                    <option value="user">Người dùng</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editAccountStatus" class="form-label">Trạng thái</label>
+                                <select class="form-select" id="editAccountStatus" required>
+                                    <option value="active">Hoạt động</option>
+                                    <option value="inactive">Đã khóa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editAccountPassword" class="form-label">Mật khẩu mới (để trống nếu không thay đổi)</label>
+                                <input type="password" class="form-control" id="editAccountPassword">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="updateAccountBtn">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <!-- Movie Management Modals -->
+    <!-- Add Movie Modal -->
+    <div class="modal fade" id="addMovieModal" tabindex="-1" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMovieModalLabel">Thêm phim mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMovieForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="movieTitle" class="form-label">Tên phim</label>
+                                <input type="text" class="form-control" id="movieTitle" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="movieGenre" class="form-label">Thể loại</label>
+                                <select class="form-select" id="movieGenre" required>
+                                    <option value="action">Hành động</option>
+                                    <option value="comedy">Hài</option>
+                                    <option value="drama">Chính kịch</option>
+                                    <option value="horror">Kinh dị</option>
+                                    <option value="romance">Lãng mạn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="movieDuration" class="form-label">Thời lượng (phút)</label>
+                                <input type="number" class="form-control" id="movieDuration" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="movieStatus" class="form-label">Trạng thái</label>
+                                <select class="form-select" id="movieStatus" required>
+                                    <option value="showing">Đang chiếu</option>
+                                    <option value="coming">Sắp chiếu</option>
+                                    <option value="ended">Đã kết thúc</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="movieReleaseDate" class="form-label">Ngày phát hành</label>
+                                <input type="date" class="form-control" id="movieReleaseDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="moviePrice" class="form-label">Giá vé (VNĐ)</label>
+                                <input type="number" class="form-control" id="moviePrice" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movieDescription" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="movieDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="moviePoster" class="form-label">Ảnh poster</label>
+                            <input type="file" class="form-control" id="moviePoster" accept="image/*" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveMovieBtn">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Movie Modal -->
+    <div class="modal fade" id="editMovieModal" tabindex="-1" aria-labelledby="editMovieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMovieModalLabel">Chỉnh sửa phim</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editMovieForm">
+                        <input type="hidden" id="editMovieId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editMovieTitle" class="form-label">Tên phim</label>
+                                <input type="text" class="form-control" id="editMovieTitle" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editMovieGenre" class="form-label">Thể loại</label>
+                                <select class="form-select" id="editMovieGenre" required>
+                                    <option value="action">Hành động</option>
+                                    <option value="comedy">Hài</option>
+                                    <option value="drama">Chính kịch</option>
+                                    <option value="horror">Kinh dị</option>
+                                    <option value="romance">Lãng mạn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editMovieDuration" class="form-label">Thời lượng (phút)</label>
+                                <input type="number" class="form-control" id="editMovieDuration" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editMovieStatus" class="form-label">Trạng thái</label>
+                                <select class="form-select" id="editMovieStatus" required>
+                                    <option value="showing">Đang chiếu</option>
+                                    <option value="coming">Sắp chiếu</option>
+                                    <option value="ended">Đã kết thúc</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editMovieReleaseDate" class="form-label">Ngày phát hành</label>
+                                <input type="date" class="form-control" id="editMovieReleaseDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editMoviePrice" class="form-label">Giá vé (VNĐ)</label>
+                                <input type="number" class="form-control" id="editMoviePrice" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editMovieDescription" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="editMovieDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editMoviePoster" class="form-label">Ảnh poster mới (bỏ trống nếu không thay đổi)</label>
+                            <input type="file" class="form-control" id="editMoviePoster" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Poster hiện tại</label>
+                            <div>
+                                <img id="currentPoster" src="" alt="Current poster" style="max-height: 150px; max-width: 100%;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="updateMovieBtn">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Dummy data for demonstration
+        const dummyAccounts = [
+            { id: 1, name: 'Nguyễn Văn A', email: 'nguyenvana@example.com', phone: '0901234567', type: 'admin', status: 'active' },
+            { id: 2, name: 'Trần Thị B', email: 'tranthib@example.com', phone: '0912345678', type: 'user', status: 'active' },
+            { id: 3, name: 'Lê Văn C', email: 'levanc@example.com', phone: '0923456789', type: 'user', status: 'inactive' },
+            { id: 4, name: 'Phạm Thị D', email: 'phamthid@example.com', phone: '0934567890', type: 'user', status: 'active' },
+            { id: 5, name: 'Hoàng Văn E', email: 'hoangvane@example.com', phone: '0945678901', type: 'user', status: 'active' }
+        ];
+
+        // Dummy movie data
+        const dummyMovies = [
+            { id: 1, title: 'Avengers: Endgame', genre: 'action', duration: 181, status: 'showing', releaseDate: '2023-04-26', price: 120000, poster: 'https://phimimg.com/upload/vod/20250506-1/24917f08e4a7c3f08309eafa7b135520.jpg', description: 'Biệt đội Avengers tập hợp một lần nữa để đảo ngược những hậu quả của Thanos.' },
+            { id: 2, title: 'Joker', genre: 'drama', duration: 122, status: 'showing', releaseDate: '2023-10-04', price: 100000, poster: 'https://phimimg.com/upload/vod/20250111-1/447a76c70474408015193c8648825038.jpg', description: 'Câu chuyện về nguồn gốc của kẻ thù không đội trời chung với Batman.' },
+            { id: 3, title: 'Parasite', genre: 'drama', duration: 132, status: 'ended', releaseDate: '2023-05-30', price: 90000, poster: 'https://phimimg.com/upload/vod/20240713-1/6c7557779fba2e7ac72e1b4223597e07.jpg', description: 'Một gia đình nghèo lần lượt xâm nhập vào cuộc sống của một gia đình giàu có.' },
+            { id: 4, title: 'The Conjuring', genre: 'horror', duration: 112, status: 'ended', releaseDate: '2023-07-19', price: 85000, poster: 'https://phimimg.com/upload/vod/20241228-1/226486a5bd9b1d810ace74f6f4d55d7a.jpg', description: 'Dựa trên câu chuyện có thật về một cặp vợ chồng điều tra những hiện tượng siêu nhiên.' },
+            { id: 5, title: 'La La Land', genre: 'romance', duration: 128, status: 'showing', releaseDate: '2023-12-09', price: 95000, poster: 'https://phimimg.com/upload/vod/20240713-1/7e2009b2be50d6a5baecefce71ca8788.jpg', description: 'Một nhạc sĩ jazz và một nữ diễn viên đầy tham vọng yêu nhau trong thành phố Los Angeles.' },
+            { id: 6, title: 'Fast X', genre: 'action', duration: 141, status: 'coming', releaseDate: '2023-05-19', price: 110000, poster: 'https://phimimg.com/upload/vod/20240103-1/f85819a6db3c8f53f6ca1875e43da3af.jpg', description: 'Phần thứ 10 của loạt phim Fast & Furious.' }
+        ];
+
+        // Dummy revenue data
+        const dummyRevenue = [
+            { id: 1, date: '2023-05-01', movieTitle: 'Avengers: Endgame', tickets: 120, amount: 14400000 },
+            { id: 2, date: '2023-05-02', movieTitle: 'Joker', tickets: 85, amount: 8500000 },
+            { id: 3, date: '2023-05-03', movieTitle: 'La La Land', tickets: 65, amount: 6175000 },
+            { id: 4, date: '2023-05-04', movieTitle: 'Avengers: Endgame', tickets: 110, amount: 13200000 },
+            { id: 5, date: '2023-05-05', movieTitle: 'Parasite', tickets: 70, amount: 6300000 },
+            { id: 6, date: '2023-05-06', movieTitle: 'Joker', tickets: 90, amount: 9000000 },
+            { id: 7, date: '2023-05-07', movieTitle: 'La La Land', tickets: 75, amount: 7125000 },
+            { id: 8, date: '2023-05-08', movieTitle: 'Avengers: Endgame', tickets: 130, amount: 15600000 },
+            { id: 9, date: '2023-05-09', movieTitle: 'The Conjuring', tickets: 60, amount: 5100000 },
+            { id: 10, date: '2023-05-10', movieTitle: 'Parasite', tickets: 80, amount: 7200000 }
+        ];
+
+        // Monthly revenue data for chart
+        const monthlyRevenue = [
+            { month: 'Tháng 1', revenue: 85000000 },
+            { month: 'Tháng 2', revenue: 92000000 },
+            { month: 'Tháng 3', revenue: 78000000 },
+            { month: 'Tháng 4', revenue: 105000000 },
+            { month: 'Tháng 5', revenue: 120000000 },
+            { month: 'Tháng 6', revenue: 95000000 }
+        ];
+    
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap components
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Tab navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all tabs and links
+                    document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    navLinks.forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    
+                    // Add active class to current link and tab
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Initialize revenue chart
+            initRevenueChart();
+            
+            // Update dashboard stats
+            updateDashboardStats();
+            
+            // Populate tables
+            populateAccountTable(dummyAccounts);
+            populateMovieGrid(dummyMovies);
+            populateMovieTable(dummyMovies);
+            populateRevenueTable(dummyRevenue);
+            
+            // Initialize event listeners for filter buttons
+            document.getElementById('revenueFilterBtn').addEventListener('click', function() {
+                filterRevenueData();
+            });
+            
+            document.getElementById('accountFilterBtn').addEventListener('click', function() {
+                filterAccountData();
+            });
+            
+            document.getElementById('movieFilterBtn').addEventListener('click', function() {
+                filterMovieData();
+            });
+            
+            // Initialize save buttons for modals
+            document.getElementById('saveAccountBtn').addEventListener('click', function() {
+                saveAccount();
+            });
+            
+            document.getElementById('updateAccountBtn').addEventListener('click', function() {
+                updateAccount();
+            });
+            
+            document.getElementById('saveMovieBtn').addEventListener('click', function() {
+                saveMovie();
+            });
+            
+            document.getElementById('updateMovieBtn').addEventListener('click', function() {
+                updateMovie();
+            });
+        });
+        
+        // Function to initialize revenue chart
+        function initRevenueChart() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            
+            // Dữ liệu cho biểu đồ
+            const months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'];
+            const revenues = [85000000, 92000000, 78000000, 105000000, 120000000, 95000000];
+            
+            // Tạo biểu đồ mới
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: revenues,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 70000000,
+                            max: 130000000,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('vi-VN') + ' đ';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toLocaleString('vi-VN') + ' đ';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Function to update dashboard statistics
+        function updateDashboardStats() {
+            // Calculate total revenue
+            const totalRevenue = dummyRevenue.reduce((sum, item) => sum + item.amount, 0);
+            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString('vi-VN') + ' đ';
+            
+            // Calculate total tickets
+            const totalTickets = dummyRevenue.reduce((sum, item) => sum + item.tickets, 0);
+            document.getElementById('bookingCount').textContent = totalTickets;
+            
+            // Set user count
+            document.getElementById('userCount').textContent = dummyAccounts.length;
+            
+            // Set movie count
+            document.getElementById('movieCount').textContent = dummyMovies.length;
+            
+            // Set revenue trend (assuming 5% increase)
+            const revenueTrend = document.getElementById('revenueTrend');
+            revenueTrend.classList.add('increase');
+            revenueTrend.innerHTML = '<span class="percentage">+5%</span><i class="fas fa-arrow-up"></i>';
+            
+            // Set ticket trend (assuming 3% increase)
+            const ticketTrend = document.getElementById('ticketTrend');
+            ticketTrend.classList.add('increase');
+            ticketTrend.innerHTML = '<span class="percentage">+3%</span><i class="fas fa-arrow-up"></i>';
+        }
+        
+        // Function to populate revenue table
+        function populateRevenueTable(revenueData) {
+            const tableBody = document.querySelector('#revenueTable tbody');
+            tableBody.innerHTML = '';
+            
+            revenueData.forEach(item => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${formatDate(item.date)}</td>
+                    <td>${item.movieTitle}</td>
+                    <td>${item.tickets}</td>
+                    <td>${item.amount.toLocaleString('vi-VN')} đ</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Function to filter revenue data
+        function filterRevenueData() {
+            const filterType = document.getElementById('revenueFilterType').value;
+            const startDate = document.getElementById('revenueStartDate').value;
+            const endDate = document.getElementById('revenueEndDate').value;
+            
+            let filteredData = [...dummyRevenue];
+            
+            if (filterType === 'date' && startDate && endDate) {
+                filteredData = filteredData.filter(item => {
+                    return item.date >= startDate && item.date <= endDate;
+                });
+            } else if (filterType === 'movie') {
+                // In a real application, you would have a dropdown to select a specific movie
+                // For this demo, we'll just show a message
+                alert('Chức năng lọc theo phim sẽ được triển khai sau.');
+            }
+            
+            populateRevenueTable(filteredData);
+        }
+        
+        // Function to format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+        
+        // Function to populate account table
+        function populateAccountTable(accounts) {
+            const tableBody = document.querySelector('#accountTable tbody');
+            tableBody.innerHTML = '';
+            
+            accounts.forEach(account => {
+                const row = document.createElement('tr');
+                
+                const statusBadge = account.status === 'active' ? 
+                    '<span class="badge bg-success">Hoạt động</span>' : 
+                    '<span class="badge bg-danger">Đã khóa</span>';
+                
+                const typeBadge = account.type === 'admin' ? 
+                    '<span class="badge bg-primary">Admin</span>' : 
+                    '<span class="badge bg-info">Người dùng</span>';
+                
+                row.innerHTML = `
+                    <td>${account.id}</td>
+                    <td>${account.name}</td>
+                    <td>${account.email}</td>
+                    <td>${account.phone}</td>
+                    <td>${typeBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary edit-account" data-id="${account.id}" data-bs-toggle="modal" data-bs-target="#editAccountModal">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-account" data-id="${account.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-account').forEach(button => {
+                button.addEventListener('click', function() {
+                    const accountId = this.getAttribute('data-id');
+                    const account = accounts.find(acc => acc.id == accountId);
+                    
+                    if (account) {
+                        document.getElementById('editAccountId').value = account.id;
+                        document.getElementById('editAccountName').value = account.name;
+                        document.getElementById('editAccountEmail').value = account.email;
+                        document.getElementById('editAccountPhone').value = account.phone;
+                        document.getElementById('editAccountType').value = account.type;
+                        document.getElementById('editAccountStatus').value = account.status;
+                    }
+                });
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-account').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (confirm('Bạn có chắc chắn muốn xóa tài khoản này?')) {
+                        const accountId = this.getAttribute('data-id');
+                        // In a real application, you would call an API to delete the account
+                        alert(`Đã xóa tài khoản có ID: ${accountId}`);
+                    }
+                });
+            });
+        }
+        
+        // Function to filter account data
+        function filterAccountData() {
+            const searchTerm = document.getElementById('accountSearch').value.toLowerCase();
+            const typeFilter = document.getElementById('accountTypeFilter').value;
+            const statusFilter = document.getElementById('accountStatusFilter').value;
+            
+            let filteredData = [...dummyAccounts];
+            
+            if (searchTerm) {
+                filteredData = filteredData.filter(account => 
+                    account.name.toLowerCase().includes(searchTerm) || 
+                    account.email.toLowerCase().includes(searchTerm) ||
+                    account.phone.includes(searchTerm)
+                );
+            }
+            
+            if (typeFilter !== 'all') {
+                filteredData = filteredData.filter(account => account.type === typeFilter);
+            }
+            
+            if (statusFilter !== 'all') {
+                filteredData = filteredData.filter(account => account.status === statusFilter);
+            }
+            
+            populateAccountTable(filteredData);
+        }
+        
+        // Function to save new account
+        function saveAccount() {
+            const name = document.getElementById('accountName').value;
+            const email = document.getElementById('accountEmail').value;
+            const phone = document.getElementById('accountPhone').value;
+            const type = document.getElementById('accountType').value;
+            const password = document.getElementById('accountPassword').value;
+            const confirmPassword = document.getElementById('accountConfirmPassword').value;
+            
+            if (!name || !email || !password) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Mật khẩu xác nhận không khớp!');
+                return;
+            }
+            
+            // In a real application, you would call an API to create the account
+            alert('Tài khoản mới đã được tạo thành công!');
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addAccountModal'));
+            modal.hide();
+            
+            // Reset the form
+            document.getElementById('addAccountForm').reset();
+        }
+        
+        // Function to update account
+        function updateAccount() {
+            const id = document.getElementById('editAccountId').value;
+            const name = document.getElementById('editAccountName').value;
+            const email = document.getElementById('editAccountEmail').value;
+            const phone = document.getElementById('editAccountPhone').value;
+            const type = document.getElementById('editAccountType').value;
+            const status = document.getElementById('editAccountStatus').value;
+            const password = document.getElementById('editAccountPassword').value;
+            
+            if (!name || !email) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            // In a real application, you would call an API to update the account
+            alert(`Tài khoản có ID: ${id} đã được cập nhật thành công!`);
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editAccountModal'));
+            modal.hide();
+        }
+        
+        // Function to populate movie grid view
+        function populateMovieGrid(movies) {
+            const movieGrid = document.getElementById('movieGrid');
+            movieGrid.innerHTML = '';
+            
+            movies.forEach(movie => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 mb-4';
+                
+                const statusClass = movie.status === 'showing' ? 'bg-success' : 
+                                  (movie.status === 'coming' ? 'bg-warning' : 'bg-secondary');
+                
+                const statusText = movie.status === 'showing' ? 'Đang chiếu' : 
+                                 (movie.status === 'coming' ? 'Sắp chiếu' : 'Đã kết thúc');
+                
+                const genreText = {
+                    'action': 'Hành động',
+                    'comedy': 'Hài',
+                    'drama': 'Chính kịch',
+                    'horror': 'Kinh dị',
+                    'romance': 'Lãng mạn'
+                }[movie.genre] || movie.genre;
+                
+                col.innerHTML = `
+                    <div class="movie-card">
+                        <img src="${movie.poster}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                        <div class="movie-card-body">
+                            <h5 class="card-title">${movie.title}</h5>
+                            <p class="card-text">
+                                <span class="badge bg-info">${genreText}</span>
+                                <span class="badge ${statusClass}">${statusText}</span>
+                            </p>
+                            <p class="card-text">${movie.duration} phút</p>
+                            <p class="card-text">Giá vé: ${movie.price.toLocaleString('vi-VN')} đ</p>
+                        </div>
+                        <div class="movie-card-footer">
+                            <button class="btn btn-sm btn-primary edit-movie" data-id="${movie.id}" data-bs-toggle="modal" data-bs-target="#editMovieModal">
+                                <i class="fas fa-edit"></i> Sửa
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-movie" data-id="${movie.id}">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                movieGrid.appendChild(col);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-movie').forEach(button => {
+                button.addEventListener('click', function() {
+                    const movieId = this.getAttribute('data-id');
+                    const movie = movies.find(m => m.id == movieId);
+                    
+                    if (movie) {
+                        document.getElementById('editMovieId').value = movie.id;
+                        document.getElementById('editMovieTitle').value = movie.title;
+                        document.getElementById('editMovieGenre').value = movie.genre;
+                        document.getElementById('editMovieDuration').value = movie.duration;
+                        document.getElementById('editMovieStatus').value = movie.status;
+                        document.getElementById('editMovieReleaseDate').value = movie.releaseDate;
+                        document.getElementById('editMoviePrice').value = movie.price;
+                        document.getElementById('editMovieDescription').value = movie.description || '';
+                        document.getElementById('currentPoster').src = movie.poster;
+                    }
+                });
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-movie').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (confirm('Bạn có chắc chắn muốn xóa phim này?')) {
+                        const movieId = this.getAttribute('data-id');
+                        // In a real application, you would call an API to delete the movie
+                        alert(`Đã xóa phim có ID: ${movieId}`);
+                    }
+                });
+            });
+        }
+        
+        // Function to populate movie table view
+        function populateMovieTable(movies) {
+            const tableBody = document.querySelector('#movieTable tbody');
+            tableBody.innerHTML = '';
+            
+            movies.forEach(movie => {
+                const row = document.createElement('tr');
+                
+                const statusClass = movie.status === 'showing' ? 'bg-success' : 
+                                  (movie.status === 'coming' ? 'bg-warning' : 'bg-secondary');
+                
+                const statusText = movie.status === 'showing' ? 'Đang chiếu' : 
+                                 (movie.status === 'coming' ? 'Sắp chiếu' : 'Đã kết thúc');
+                
+                const genreText = {
+                    'action': 'Hành động',
+                    'comedy': 'Hài',
+                    'drama': 'Chính kịch',
+                    'horror': 'Kinh dị',
+                    'romance': 'Lãng mạn'
+                }[movie.genre] || movie.genre;
+                
+                row.innerHTML = `
+                    <td>${movie.id}</td>
+                    <td><img src="${movie.poster}" alt="${movie.title}" style="height: 50px;" onerror="this.src='https://via.placeholder.com/50x75?text=No+Image'"></td>
+                    <td>${movie.title}</td>
+                    <td>${genreText}</td>
+                    <td>${movie.duration} phút</td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary edit-movie" data-id="${movie.id}" data-bs-toggle="modal" data-bs-target="#editMovieModal">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-movie" data-id="${movie.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Add event listeners to edit and delete buttons (same as in grid view)
+            document.querySelectorAll('#movieTable .edit-movie').forEach(button => {
+                button.addEventListener('click', function() {
+                    const movieId = this.getAttribute('data-id');
+                    const movie = movies.find(m => m.id == movieId);
+                    
+                    if (movie) {
+                        document.getElementById('editMovieId').value = movie.id;
+                        document.getElementById('editMovieTitle').value = movie.title;
+                        document.getElementById('editMovieGenre').value = movie.genre;
+                        document.getElementById('editMovieDuration').value = movie.duration;
+                        document.getElementById('editMovieStatus').value = movie.status;
+                        document.getElementById('editMovieReleaseDate').value = movie.releaseDate;
+                        document.getElementById('editMoviePrice').value = movie.price;
+                        document.getElementById('editMovieDescription').value = movie.description || '';
+                        document.getElementById('currentPoster').src = movie.poster;
+                    }
+                });
+            });
+            
+            document.querySelectorAll('#movieTable .delete-movie').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (confirm('Bạn có chắc chắn muốn xóa phim này?')) {
+                        const movieId = this.getAttribute('data-id');
+                        // In a real application, you would call an API to delete the movie
+                        alert(`Đã xóa phim có ID: ${movieId}`);
+                    }
+                });
+            });
+        }
+        
+        // Function to filter movie data
+        function filterMovieData() {
+            const searchTerm = document.getElementById('movieSearch').value.toLowerCase();
+            const genreFilter = document.getElementById('movieGenreFilter').value;
+            const statusFilter = document.getElementById('movieStatusFilter').value;
+            
+            let filteredData = [...dummyMovies];
+            
+            if (searchTerm) {
+                filteredData = filteredData.filter(movie => 
+                    movie.title.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (genreFilter !== 'all') {
+                filteredData = filteredData.filter(movie => movie.genre === genreFilter);
+            }
+            
+            if (statusFilter !== 'all') {
+                filteredData = filteredData.filter(movie => movie.status === statusFilter);
+            }
+            
+            populateMovieGrid(filteredData);
+            populateMovieTable(filteredData);
+        }
+        
+        // Function to save new movie
+        function saveMovie() {
+            const title = document.getElementById('movieTitle').value;
+            const genre = document.getElementById('movieGenre').value;
+            const duration = document.getElementById('movieDuration').value;
+            const status = document.getElementById('movieStatus').value;
+            const releaseDate = document.getElementById('movieReleaseDate').value;
+            const price = document.getElementById('moviePrice').value;
+            const description = document.getElementById('movieDescription').value;
+            const posterFile = document.getElementById('moviePoster').files[0];
+            
+            if (!title || !duration || !releaseDate || !price || !posterFile) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            // In a real application, you would upload the poster file and call an API to create the movie
+            alert('Phim mới đã được tạo thành công!');
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addMovieModal'));
+            modal.hide();
+            
+            // Reset the form
+            document.getElementById('addMovieForm').reset();
+        }
+        
+        // Function to update movie
+        function updateMovie() {
+            const id = document.getElementById('editMovieId').value;
+            const title = document.getElementById('editMovieTitle').value;
+            const genre = document.getElementById('editMovieGenre').value;
+            const duration = document.getElementById('editMovieDuration').value;
+            const status = document.getElementById('editMovieStatus').value;
+            const releaseDate = document.getElementById('editMovieReleaseDate').value;
+            const price = document.getElementById('editMoviePrice').value;
+            const description = document.getElementById('editMovieDescription').value;
+            const posterFile = document.getElementById('editMoviePoster').files[0];
+            
+            if (!title || !duration || !releaseDate || !price) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            // In a real application, you would upload the new poster file (if provided) and call an API to update the movie
+            alert(`Phim có ID: ${id} đã được cập nhật thành công!`);
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editMovieModal'));
+            modal.hide();
+        }
+    </script>
 </body>
 </html> 

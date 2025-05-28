@@ -357,71 +357,9 @@ body {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Nút xem phim */
-.btn-follow-movie {
-  padding: 8px 12px;
-  border: none;
-  font-size: 17px;
-  color: #fff;
-  border-radius: 7px;
-  letter-spacing: 4px;
-  font-weight: 500;
-  transition: 0.5s;
-  transition-property: box-shadow;
-  background: #4CAF50;
-  box-shadow: 0 0 25px rgba(76, 175, 80, 0.5);
-  margin-left: 30px;
-}
 
-.btn-follow-movie:hover {
-  box-shadow: 0 0 5px #4CAF50,
-    0 0 25px #4CAF50,
-    0 0 50px #4CAF50,
-    0 0 100px #4CAF50;
-}
 
-.btn-follow-movie.active {
-  background: #f44336;
-  box-shadow: 0 0 25px rgba(244, 67, 54, 0.5);
-}
 
-.btn-follow-movie.active:hover {
-  box-shadow: 0 0 5px #f44336,
-    0 0 25px #f44336,
-    0 0 50px #f44336,
-    0 0 100px #f44336;
-}
-
-/* Thêm container cho các nút */
-.movie-buttons {
-  display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.btn-play-movie {
-  padding: 8px 12px;
-  border: none;
-  font-size: 17px;
-  color: #fff;
-  border-radius: 7px;
-  letter-spacing: 4px;
-  font-weight: 500;
-  transition: 0.5s;
-  transition-property: box-shadow;
-}
-
-.btn-play-movie {
-  background: rgb(0, 140, 255);
-  box-shadow: 0 0 25px rgb(0, 140, 255);
-}
-
-.btn-play-movie:hover {
-  box-shadow: 0 0 5px rgb(0, 140, 255),
-    0 0 25px rgb(0, 140, 255),
-    0 0 50px rgb(0, 140, 255),
-    0 0 100px rgb(0, 140, 255);
-}
 
 .movie-details .name-sub {
   color: #a0a0a0;

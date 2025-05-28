@@ -32,6 +32,8 @@ function displayMovieDetails(movie) {
     // Thêm class cho container nhưng không sử dụng ảnh nền từ API
     const mainContainer = document.querySelector('.container.mt-4');
     mainContainer.classList.add('movie-details-bg');
+    mainContainer.setAttribute('data-aos', 'fade-up');
+    mainContainer.setAttribute('data-aos-duration', '800');
     
     // Sử dụng màu nền tối thay vì ảnh nền
     mainContainer.style.backgroundColor = 'var(--dark-bg-lighter)';
@@ -64,27 +66,27 @@ function displayMovieDetails(movie) {
     // Hiển thị thông tin chi tiết phim
     detailsContainer.innerHTML = `
         <div class="row movie-details">
-            <div class="col-md-4">
+            <div class="col-md-4" data-aos="fade-right" data-aos-duration="1000">
                 <img src="${movie.poster_url}" 
                     class="img-fluid rounded shadow" 
                     alt="${movie.name}">
-                <div class="movie-meta mt-3">
+                <div class="movie-meta mt-3" data-aos="fade-up" data-aos-delay="200">
                     <span class="badge bg-primary me-2">${movie.quality}</span>
                     <span class="badge bg-secondary me-2">${movie.lang}</span>
                     ${showDirectorBadge ? `<span class="badge bg-success me-2">${movie.director}</span>` : ''}
                     ${movie.is_copyright ? '<span class="badge bg-danger">Bản quyền</span>' : ''}
                 </div>
-                <div class="movie-buttons">
+                <div class="movie-buttons" data-aos="fade-up" data-aos-delay="400">
                     <button class="btn-play-movie" id="watchFirstEpisode">Xem phim</button>
                     <button class="btn-follow-movie ${isBookmarked ? 'active' : ''}" id="followMovie">
                         <i class="fa-solid fa-bookmark"></i>
                     </button>
                 </div>
             </div>
-            <div class="col-md-8">
-                <h1 class="sub-main">${movie.name}</h1>
-                <h3 class="name-sub">${movie.origin_name}</h3>
-                <div class="mt-3 body-test-details" style="background-color: var(--dark-bg); padding: 15px; border-radius: 8px;">
+            <div class="col-md-8" data-aos="fade-left" data-aos-duration="1000">
+                <h1 class="sub-main" data-aos="fade-down" data-aos-delay="200">${movie.name}</h1>
+                <h3 class="name-sub" data-aos="fade-down" data-aos-delay="300">${movie.origin_name}</h3>
+                <div class="mt-3 body-test-details" data-aos="fade-up" data-aos-delay="400" style="background-color: var(--dark-bg); padding: 15px; border-radius: 8px;">
                     <p><strong>Trạng thái:</strong> <span class="status-badge">${movie.episode_current}</span></p>
                     <p><strong>Năm phát hành:</strong> ${movie.year}</p>
                     <p><strong>Thời lượng:</strong> ${movie.time}</p>
