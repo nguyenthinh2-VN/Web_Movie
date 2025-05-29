@@ -28,10 +28,6 @@ Yuki Movie là nền tảng xem phim trực tuyến với giao diện hiện đ�
 - [Font Awesome](https://fontawesome.com/)
 - [jQuery](https://jquery.com/)
 
-### Backend (nếu có)
-- Node.js
-- Express.js
-- MongoDB
 
 ## 🛠️ Cài đặt
 
@@ -69,14 +65,13 @@ Dự án này được cấp phép theo giấy phép MIT - xem file [LICENSE](LI
 
 ## 👥 Đội ngũ phát triển
 
-- **Nguyễn Văn A** - [@nguyenvana](https://github.com/nguyenvana)
-- **Trần Thị B** - [@tranthib](https://github.com/tranthib)
+- **Nguyễn Đức Thịnh** - [@nguyenthinh2](https://github.com/nguyenthinh2)
 
 ## 📞 Liên hệ
 
 - Email: contact@yukimovie.com
-- Website: [https://yukimovie.com](https://yukimovie.com)
-- Facebook: [Yuki Movie](https://facebook.com/yukimovie)
+- Website: [[https://yukimovie.com](https://web-movie-alpha.vercel.app/About.html)]([https://yukimovie.com](https://web-movie-alpha.vercel.app/About.html))
+- Facebook: [Yuki Movie](https://facebook.com/nguyenthinh0)
 
 ---
 
